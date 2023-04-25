@@ -1,4 +1,4 @@
-var CACHE_NAME = 'mycat-byPlutonny' 
+var CACHE_NAME = 'csc11-v4-byPlutonny' 
 
 self.addEventListener('activate', event => {
     const cacheWhitelist = [CACHE_NAME];

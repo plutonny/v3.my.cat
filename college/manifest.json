@@ -1,7 +1,7 @@
 {
-  "version"          : "1.0.0",
-  "short_name"       : "My cat ❤️",
-  "name"             : "Когда приедет радость?",
+  "version"          : "4.0.0",
+  "short_name"       : "КСК-11",
+  "name"             : "Страница группы КСК-11",
   "icons"            : [ { "src": "pwa-icon.png",  "sizes": "512x512", "type": "image/png", "purpose": "any maskable" } ],
   "start_url"        : "index.html",
   "id"               : "index.html",
