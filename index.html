@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+
+        <meta                                       charset="UTF-8">
+        <meta   http-equiv="Permissions-Policy"     content="interest-cohort=()">
+        <meta   http-equiv="Cache-Control"          content="no-cache">
+        <meta   http-equiv="Pragma"                 content="no-cache">
+        <meta   name="viewport"                     content="width=device-width, initial-scale=1.0">
+        <meta   name="author"                       content="Plutonny">
+        <meta   name="description"                  content="my cat ❤️">
+        <meta   name="theme-color" id="theme-color" content="#000000">
+        <title  id="title-page"                     >my cat ❤️</title>
+        <link   rel="manifest"                      href="manifest.json">
+
+        <script type="text/javascript">
+            function clgenld() { 
+                let clengl = setInterval(function() {
+                    try { 
+                        document.getElementById('genload').remove()
+                    } catch {}
+                }, 1); 
+            }
+        </script>
+        
+        <!-- fonts and icons -->
+        <style>
+            @font-face {
+                font-family: 'Material Symbols Rounded';
+                font-style: normal;
+                font-weight: 100 700;
+                src: url(https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2) format('woff2');
+                }
+
+                .material-symbols-rounded {
+                font-family: 'Material Symbols Rounded';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 24px;
+                line-height: 1;
+                letter-spacing: normal;
+                text-transform: none;
+                display: inline-block;
+                white-space: nowrap;
+                word-wrap: normal;
+                direction: ltr;
+                -webkit-font-feature-settings: 'liga';
+                -webkit-font-smoothing: antialiased;
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 26;
+            }
+        </style>
+        <link   rel="preconnect"                    href="https://fonts.googleapis.com">
+        <link   rel="preconnect"                    href="https://fonts.gstatic.com" crossorigin>
+        <link   rel="stylesheet"                    href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
+        <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
+        
+        <!-- CSS and icon site -->
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=20.04.2023-v300-b14" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=20.04.2023-v300-b14">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=20.04.2023-v300-b14">
+
+        <!-- JS files -->
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.0.js?cache=20.04.2023-v300-b14"></script>
+
+        <!-- GLOBAL VARIABLES -->
+        <script type="text/javascript">
+            "use strict";
+            
+            var siteVersion = '3.0.0'
+            var siteBuild = '14'
+
+            var DATESTATIC = new Date()
+
+            function addScript(src){ var script = document.createElement('script'); script.type = 'text/javascript'; script.src = src; script.async = false; document.head.appendChild(script) }
+        </script>
+
+        <!-- UX -->
+        <script type="text/javascript">
+            var UX = {
+                modal: async function(content) {
+                    try {
+                        await plutonny.sleep(200)
+                        plutonny.console.error('index.html -> UX.modal()', 'ЦВЕТ СТРОКИ СОСТОЯНИЯ УКАЖИ')
+                        document.getElementById('theme-color').content = '#2a2a2a'
+                        plutonny.output('modal', `
+                            <div class="max-modal">
+                                <style>
+                                    div#modal { position: fixed; height: 100vh; width: 100vw; background-color :#40404075; display: flex; justify-content: center; align-items: center; z-index: 100; }
+                                </style>
+                                ${content}
+                            </div>
+                        `) 
+                        return true
+                    } catch (e) {
+                        plutonny.console.error('index.html -> UX.modal()', e)
+                        return false
+                    }
+                }
+            }
+        </script>
+
+        <!-- UI -->
+        <script type="text/javascript">
+            var UI = {
+                header: function(settings) {
+                    try {
+                        plutonny.output(`header`, `
+                            <div class="hdr">
+                                <style>
+                                    #header {
+                                        z-index: 3;
+                                        width: 100%;
+                                    }
+                                    .hdr { 
+                                        padding-bottom: 12px; 
+                                        display: flex; 
+                                        flex-direction: row; 
+                                        flex-wrap: nowrap; 
+                                        align-items: flex-start; 
+                                    }
+                                </style>
+                                <div style="height: 38px; width: 38px; z-index: 90; fill: currentColor; margin: 18px 0 0 12px; border-radius: 100px; cursor: pointer;">
+                                    ${settings.buttonBack ? 
+                                    `<span onclick="history.back()" class="material-symbols-rounded icoGo" style="font-size: 32px !important;">arrow_back</span>` : ''}
+                                </div>
+                                <div style="margin-right: auto;"></div>
+                                <p style="text-align: center; font-size: 20px; margin-bottom: 8px; z-index: 10;" onclick="addScript('//cdn.jsdelivr.net/npm/eruda?t=${DATESTATIC.getTime()}'); eruda.init()">${settings.textCenter}</p>
+                                <div style="margin-right: auto;"></div>
+                                <div style="height: 38px; width: 38px; z-index: 90; fill: currentColor; margin: 18px 12px 0 0; border-radius: 100px; cursor: pointer;">
+                                </div>
+                            </div>
+                            <hr style="border: none; height: 1px; margin-top: 0; margin-bottom: 0; background-color: var(--text-color); opacity: 0.2; width: calc(100% - 20px);">
+                        `)
+
+                        return true
+
+                    } catch (e) { 
+
+                        plutonny.console.error('index.html -> UI.header()', e) 
+                        return false
+
+                    }
+                },
+                cIcon: function(settings) {
+                    let colinj = {}
+                    if (settings.color[0] == '#') colinj = {
+                        icon: settings.color, 
+                        button: `${settings.color}40`
+                    }
+                    else colinj = {
+                        icon: `var(--UI-icon-${settings.color})`, 
+                        button: `var(--UI-icon-${settings.color}-op)`
+                    }
+                    return `
+                        <div style="user-select: none; height: ${settings.size}px; width: ${settings.size}px; display: flex; align-content: center; justify-content: center; align-items: center; background-color: ${colinj.button}; border-radius: ${settings.border}px">
+                            <span style="color: ${colinj.icon}; font-size: ${settings.font}px;" class="material-symbols-rounded icoGo">${settings.icon}</span>
+                        </div>
+                    `
+                },
+                rus: function(format, number) {
+                    try {
+                        var n    = Math.floor(number % 10)
+                        var n100 = Math.floor(number % 100)
+
+                        var u1 = [11, 12, 13, 14, 15, 16, 17, 18, 19].includes(n100),
+                            u2 = n == 1,
+                            u3 = [2, 3, 4].includes(n),
+                            u4 = [5, 6, 7, 8, 9, 0].includes(n)
+
+                        switch (format) {
+                            case 'week':
+                                if (u1 || u4) return number + ' недель'
+                                if (u2) return number + ' неделя'
+                                if (u3) return number + ' недели'
+                                break
+                            case 'day':
+                                if (u1 || u4) return number + ' дней'
+                                if (u2) return number + ' день'
+                                if (u3) return number + ' дня'
+                                break
+                            case 'hour':
+                                if (u1 || u4) return number + ' часов'
+                                if (u2) return number + ' час'
+                                if (u3) return number + ' часа'
+                                break
+                            case 'minute':
+                                if (u1 || u4) return number + ' минут'
+                                if (u2) return number + ' минута'
+                                if (u3) return number + ' минуты'
+                                break
+                            case 'minuteS':
+                                return number + ' мин.'
+                                break
+                            case 'second':
+                                if (u1 || u4) return number + ' секунд'
+                                if (u2) return number + ' секунда'
+                                if (u3) return number + ' секунды'
+                                break
+                            case 'milisecond':
+                                if (u1 || u4) return number + ' миллисекунд'
+                                if (u2) return number + ' миллисекунда'
+                                if (u3) return number + ' миллисекунды'
+                                break
+                            default:
+                                return 'ошибка'
+                        }
+                    } catch (e) { plutonny.console.error('UI.rus()', e) }
+                }
+            }
+        </script>
+
+        <!-- serviceWorker -->
+        <script type="text/javascript">
+            if ('serviceWorker' in navigator) { 
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/service-worker.js').then(
+                        function(registration) { console.log(`serviceWorker: registration with scope ${registration.scope}`) },
+                        function(e) { plutonny.console.error('index.html ->', `serviceWorker registration failed: ${e}`) }
+                    ).catch(function(e) { plutonny.console.error('index.html ->', `serviceWorker function (${e})`) })
+                })
+            } else plutonny.console.warn('index.html ->', 'service worker is not supported')
+        </script>
+
+    </head>
+    <body>
+
+        <noscript style="color: white; font-size: 36px;">включите JavaScript чтобы пользоваться сайтом</noscript>
+
+        <div class="modal" id="modal"></div>
+
+        <div id="genload" class="genload">
+            <style>
+                .icoGo { display: none; }
+            </style>
+        </div>
+
+        <div id="pageble" class="pageble">
+            <div class="page" id="page">
+                <div class="header" id="header">
+                    <script>
+                        UI.header({
+                            textCenter: 'my cat',
+                            buttonBack: false
+                        })
+                    </script>
+                </div>
+                <div class="content" id="content"></div>
+            </div>
+        </div>
+
+    </body>
+</html>
