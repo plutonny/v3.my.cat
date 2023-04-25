@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+
+        <meta                                       charset="UTF-8">
+        <meta   http-equiv="Permissions-Policy"     content="interest-cohort=()">
+        <meta   http-equiv="Cache-Control"          content="no-cache">
+        <meta   http-equiv="Pragma"                 content="no-cache">
+        <meta   name="viewport"                     content="width=device-width, initial-scale=1.0">
+        <meta   name="author"                       content="Plutonny">
+        <meta   name="description"                  content="Когда приедет радость?">
+        <meta   name="theme-color" id="theme-color" content="#202020">
+        <title  id="title-page"                     >❤️❤️❤️</title>
+        <link   rel="icon"                          href="pwa-icon.png">
+        <link   rel="manifest"                      href="manifest.json">
+        <script type="text/javascript"              src="//cdn.jsdelivr.net/npm/eruda"></script>
+        <script type="text/javascript"              >eruda.init()</script>
+
+        <link   rel="preconnect"                    href="//fonts.googleapis.com">
+        <link   rel="preconnect"                    href="//fonts.gstatic.com" crossorigin>
+        <link   rel="stylesheet"                    href="//fonts.googleapis.com/css2?family=Montserrat&display=swap">
+        
+        <script type="text/javascript"              src="main.js?v=1b013"></script>
+        <link   rel="preload prefetch stylesheet"   href="load.css?v=1b013" as="style">
+        <link   rel="preload prefetch stylesheet"   href="themes.css?v=1b013" as="style">
+        <link   rel="preload prefetch stylesheet"   href="pages.css?v=1b013" as="style">
+        <link   rel="preload prefetch stylesheet"   href="main.css?v=1b013" as="style">
+
+        <script type="text/javascript">
+            //             IMPORTANT                               \\
+            //                      IMPORTANT                      \\
+            //                               IMPORTANT             \\
+                              console.log('BUILD 13')
+            
+            var DBTIME = {
+                'army':                      [new Date(2022, 6, 13, 15, 0), new Date(2023, 6, 15, 8, 0), 'До приезда Макса', 'Макс уже приехал'],
+                'anniversary': normalizeDate([new Date(NOW.getFullYear(), 4, 27, 22, 14), 'До годовщины отношений', 'Сегодня годовщина']),
+                'birMax':      normalizeDate([new Date(NOW.getFullYear(), 5, 11), 'До дня рождения Макса', 'С днем рождения, Макс']),
+                'birVitya':    normalizeDate([new Date(NOW.getFullYear(), 7, 22), 'До дня рождения Вити', 'С днем рождения, Витя']),
+                'newyear':     normalizeDate([new Date(NOW.getFullYear(), 11, 31, 23, 59, 59), 'До нового года', 'С новым годом']),
+                'summers':     normalizeDate([new Date(NOW.getFullYear(), 4, 31, 23, 59, 59), 'До начала лета', 'С началом лета']),
+                'summere':     normalizeDate([new Date(NOW.getFullYear(), 7, 31, 23, 59, 59), 'До конца лета', 'С началом осени']),
+            }
+            //             IMPORTANT                               \\
+            //                      IMPORTANT                      \\
+            //                               IMPORTANT             \\
+        </script>
+
+        <!-- COUNTER TIMER -->
+        <script>
+           /**
+             * @param {Date} START
+             * @param {Date} END
+             * @param {str} textPROCESS (printing before end)
+             * @param {str} textEND (printing in day end)
+             * @returns text with current formatting number
+             */
+            function COUNTER(START, END, textPROCESS, textEND) {
+                let NOW = new Date()
+                let p = END - NOW
+                if (p < 0) document.querySelector('.content').innerHTML = `<h1>${textEND}!</h1>`
+                else {
+                    document.querySelector('#nameCounter').innerHTML = `${textPROCESS}:`
+
+                    // GENERAL COUNTER TIMER
+                    var general_timer = setInterval(function() {
+                        let NOW = new Date()
+                        let p   = END - NOW
+                        if (p > 0) {
+                            let r   = (END - NOW) / 1000
+
+                            let rd  = Math.floor(r / 60 / 60 / 24)
+                                r  -=            rd * 60 * 60 * 24
+                            let rh  = Math.floor(r / 60 / 60)
+                                r  -=            rh * 60 * 60
+                            let rm  = Math.floor(r / 60)
+                                r  -=            rm * 60
+                            let rs  = Math.floor(r)
+                                r  -=            rs
+                            let rc  = Math.floor(r * 1000)
+
+                            document.querySelector('#general-counter-text').innerHTML = `
+                                ${rus('day', rd)}, 
+                                ${rus('hour', rh)}, 
+                                ${rus('minute', rm)},
+                                <br> 
+                                ${rus('second', rs)}, 
+                                ${rus('milisecond', rc)}
+                            `
+                        } else COUNTER(START, END, textPROCESS, textEND)
+                    }, 10)
+
+                    var general_timer2 = setInterval(function() {
+                        let NOW = new Date()
+                        let r   = END - NOW
+                        if (r > 0) {
+                            let percents = (START - NOW) / (START - END) * 100
+                            let p        = parseFloat(parseInt((percents * 1000) + 1)) / 1000
+    
+                            document.querySelector('#general-counter-percents').innerHTML = `${p} %`
+                            document.querySelector('#general-counter-progressbar').innerHTML = `<style>#general-counter-progressbar { width: ${((document.body.clientWidth - 48) / 100) * p}px; }</style>`
+                        }
+                    }, 1000)
+
+                    // ADDITIONAL COUNTER TIMER
+                    var additional_timer = setInterval(function(){
+                        let NOW = new Date()
+                        let p   = END - NOW
+
+                        if (p > 0) {
+                            let r   = (END - NOW) / 1000
+
+                            let cmn = new Date(NOW.getFullYear(), NOW.getMonth() + 1, END.getDate(), END.getHours(), END.getMinutes(), END.getSeconds())
+                            let smn = new Date(NOW.getFullYear(), NOW.getMonth(), END.getDate(), END.getHours(), END.getMinutes(), END.getSeconds())
+                            let rmm = (cmn - NOW) / (cmn - smn)
+
+                            let rw  = Math.floor((r / 60 / 60 / 24 / 7) * 100) / 100
+                            document.querySelector('#week-text').innerHTML = rus('week', rw)
+                            let rd  = Math.floor((r / 60 / 60 / 24) * 100) / 100
+                            document.querySelector('#day-text').innerHTML = rus('day', rd)
+                            let rh  = Math.floor((r / 60 / 60) * 100) / 100
+                            document.querySelector('#hour-text').innerHTML = rus('hour', rh)
+                            let rm  = Math.floor((r / 60) * 100) / 100
+                            document.querySelector('#minute-text').innerHTML = rus('minute', rm)
+                            
+                            document.querySelector('#AddiCouG').innerHTML = `
+                            #week-progressbar { width: ${((document.body.clientWidth - 48) / 100) * Math.floor((rmm % 1)*100)}px; }
+                            #day-progressbar { width: ${((document.body.clientWidth - 48) / 100) * Math.floor((rw % 1)*100)}px; }
+                            #hour-progressbar { width: ${((document.body.clientWidth - 48) / 100) * Math.floor((rd % 1)*100)}px; }
+                            #minute-progressbar { width: ${((document.body.clientWidth - 48) / 100) * Math.floor((rh % 1)*100)}px; }
+                            `
+                        }
+                    }, 1000)
+
+                    var additional_timer2 = setInterval(function(){
+                        let NOW = new Date()
+                        let p   = END - NOW
+                        if (p > 0) {
+                            let r   = (END - NOW) / 1000
+
+                            let rm = r / 60
+                            let rs  = Math.floor((r) * 100) / 100
+                            document.querySelector('#second-text').innerHTML = rus('second', rs)
+                            
+                            document.querySelector('#AddiCouA').innerHTML = `#second-progressbar { width: ${((document.body.clientWidth - 48) / 100) * Math.floor((rm % 1)*100)}px; }`
+                        }
+                    }, 10)
+                }
+            }
+        </script>
+
+    </head>
+    <body>
+
+        <div id="genload" class="genload">
+            <style>
+                .genload {
+                    backdrop-filter: blur(10px);
+                    position: fixed;
+                    z-index: 100;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    align-content: center;
+                    height: 100vh;
+                    width: 100vw;
+                }
+                .loader_box {
+                    border-radius: 28px;
+                    background-color: var(--background);
+                    height: 120px;
+                    width: 120px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    align-content: center;
+                }
+                html, body { margin: 0; }
+            </style>
+            <div class="loader_box">
+                <div class="loader">
+                    <svg viewBox="0 0 80 80">
+                        <circle cx="40" cy="40" r="32"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- background images worker -->  
+        <div class="background">
+            <img src="" height="200px" width="200px" style="transform: rotate(45deg); position: absolute; top: 5vh; right: 0vw;">
+            <img src="" height="200px" width="200px" style="transform: rotate(-45deg); position: absolute; top: 35vh; right: 55vw;">
+            <img src="" height="200px" width="200px" style="transform: rotate(45deg); position: absolute; top: 65vh; right: 0vw;">
+            <script>
+                var imgf = document.querySelectorAll('img')
+                for (var i = 0; i < imgf.length; i++) { imgf[i].src = `i/${SEASON}.png` }
+            </script>
+        </div>
+
+        <div id="back_button"></div>
+        <header>
+            <a style="width: 148px; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; justify-content: space-between; text-decoration: none;" href="/index.html"><h1>My cat</h1><img src="i/heart.png" height="32px" width="32px"></a>
+            <hr>
+        </header>
+
+        <div class="content">
+
+            <div class="general-counter-div" style="width: 100%;">
+                <h1 id="nameCounter"></h1>
+                <div class="general-counter-box"><div id="general-counter-progressbar"></div><p style="position: absolute; font-size: 24px; width: calc(100vw - 48px);" id="general-counter-percents">--.--- %</p></div>
+                <p id="general-counter-text">- дней, - часов, - минут, - секунд, - милисекунд</p>
+            </div>
+
+            <style id="AddiCouG"></style>
+            <style id="AddiCouA"></style>
+            <div class="additional-counter-div" style="width: 100%; padding-top: 58px;">
+                <h1>или:</h1>
+                <div class="additional-counter-box week-acb">
+                    <div class="additional-counter week-box"><div class="additional-counter-height" id="week-progressbar"></div></div>
+                    <p class="additional-counter" id="week-text">-.-- недель</p>
+                </div>
+                <div class="additional-counter-box day-acb">
+                    <div class="additional-counter day-box"><div class="additional-counter-height" id="day-progressbar"></div></div>
+                    <p class="additional-counter" id="day-text">-.-- дней</p>
+                </div>
+                <div class="additional-counter-box hour-acb">
+                    <div class="additional-counter hour-box"><div class="additional-counter-height" id="hour-progressbar"></div></div>
+                    <p class="additional-counter" id="hour-text">-.-- часов</p>
+                </div>
+                <div class="additional-counter-box minute-acb">
+                    <div class="additional-counter minute-box"><div class="additional-counter-height" id="minute-progressbar"></div></div>
+                    <p class="additional-counter" id="minute-text">-.-- минут</p>
+                </div>
+                <div class="additional-counter-box second-acb">
+                    <div class="additional-counter second-box"><div class="additional-counter-height" id="second-progressbar"></div></div>
+                    <p class="additional-counter" id="second-text">-.-- секунд<p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Page worker system -->
+        <script>
+            if (isURLempty) {
+                function buttonHome(name) {
+                    return `
+                    <button
+                        style="
+                            display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: space-between;
+                            padding: 12px; margin: 12px;
+                            width: calc(50vw - 24px);"
+                        onclick="window.location.href = '/?id=${name}'"
+                    >
+                        <p align="center" style="font-size: 18px; margin-bottom: 8px; width: 100%;">${DBTIME[name][2]}</p>
+                        <div style="width: 100%;">
+                            <div class="button-counter"><div style="background-image: var(--line-${SEASON}); border-radius: 100px; height: 38px; width: ${(((document.body.clientWidth / 2) - 48) / 100) * fastPercents(DBTIME[name][0], DBTIME[name][1])}px; "></div><p style="position: absolute; font-size: 24px; width: calc(50vw - 48px);" id="general-counter-percents">${fastPercents(DBTIME[name][0], DBTIME[name][1])} %</p></div>
+                        </div>
+                    </button>
+                    `
+                }
+                document.querySelector('.content').innerHTML = `
+                <style>.content { padding: 0; }</style>
+                <h1 style="margin: 60px 0;">Счетчики:</h1>
+                <div style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start;">
+                    ${buttonHome('army')}
+                    ${buttonHome('anniversary')}
+                    ${buttonHome('birMax')}
+                    ${buttonHome('birVitya')}
+                    ${buttonHome('newyear')}
+                    ${buttonHome('summers')}
+                </div>
+                <p style="opacity: var(--op); text-align: center; position: fixed; top: calc(100% - 42px);">v.2<br>by Plutonny</p>
+                `
+            } else {
+                try {
+                    document.querySelector('#back_button').innerHTML += `
+                    <button style="color: var(--text); height: 38px; width: 38px; z-index: 90; border: none !important; fill: currentColor; position: absolute; margin-left: 8px; margin-top: 14px; border-radius: 100px; cursor: pointer; padding: 2px 3px 0px 3px; background-color: transparent;" onclick="history.back()">
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 20 20" height="32px" viewBox="0 0 24 24" width="32px">
+                            <rect fill="none" height="24" width="24"></rect>
+                            <g><polygon points="17.77,3.77 16,2 6,12 16,22 17.77,20.23 9.54,12"></polygon></g>
+                        </svg>
+                    </button>`
+                    COUNTER(DBTIME[URL['id']][0], DBTIME[URL['id']][1], DBTIME[URL['id']][2], DBTIME[URL['id']][3])
+                } catch {
+                    document.querySelector('.content').innerHTML = `
+                    <h1 style="font-size: 48px;">404</h1>
+                    <div style="height: 20px;"></div>
+                    <h2>Страница не найдена</h2>
+                    `
+                }
+            }
+        </script>
+
+        <!-- Styling -->
+        <script>
+            document.querySelector('#genload').innerHTML += `<style>.loader { --path: var(--text); --dot: var(--ui-${SEASON}); }</style>`
+            document.body.innerHTML += `<style>
+                h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::selection, p::selection, a::selection, b::selection, td::selection, div::selection, svg::selection, li::selection, img::selection, button::selection, br::selection, input::selection, label::selection, span::selection, iframe::selection { background-color: var(--ui-${SEASON}); color: var(--text); }
+                h1::-moz-selection, h2::-moz-selection, h3::-moz-selection, h4::-moz-selection, h5::-moz-selection, h6::-moz-selection, p::-moz-selection, a::-moz-selection, b::-moz-selection, td::-moz-selection, div::-moz-selection, svg::-moz-selection, li::-moz-selection, img::-moz-selection, button::-moz-selection, br::-moz-selection, input::-moz-selection, label::-moz-selection, span::-moz-selection, iframe::-moz-selection { background-color: var(--ui-${SEASON}); color: var(--text); }
+
+                #general-counter-progressbar,
+                #week-progressbar,
+                #day-progressbar,
+                #hour-progressbar,
+                #minute-progressbar,
+                #second-progressbar { background-image: var(--line-${SEASON}); }
+                
+                img {
+                    filter:         drop-shadow(0px 0px 65px var(--ui-${SEASON}));
+                    -webkit-filter: drop-shadow(0px 0px 65px var(--ui-${SEASON}));
+                }
+
+            </style>`
+        </script>
+
+        <script>
+            window.addEventListener('load', async function() { await sleep(1000); document.getElementById('genload').remove() })
+        </script>
+
+    </body>
+</html>
