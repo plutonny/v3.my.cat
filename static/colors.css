@@ -1,0 +1,13 @@
+:root {
+    --line-winter:  linear-gradient(to right, #00aaffb3, #0066ffb3);
+    --line-autumn:  linear-gradient(to right, #ffff00b3, #ffaa00b3);
+    --line-spring:  linear-gradient(to right, #00ff66b3, #00ff00b3);
+    --line-summer:  linear-gradient(to right, #ff6600b3, #ff0000b3);
+    --line-newyear: linear-gradient(to right, #ff0000b3 3%, #ffaa00b3 27%, #00ff00b3 65%, #0066ffb3 100%);
+
+    --ui-winter:  #007aff;
+    --ui-autumn:  #ff7a00;
+    --ui-spring:  #00ff33;
+    --ui-summer:  #ff0000;
+    --ui-newyear: #00ff33;
+}
