@@ -16,17 +16,18 @@
     --button-con-color-active:    #404040;
     --icon-color:                 #707070;
 
-    --line-winter:  linear-gradient(to right, #00aaffb3, #0066ffb3);
-    --line-autumn:  linear-gradient(to right, #ffff00b3, #ffaa00b3);
-    --line-spring:  linear-gradient(to right, #00ff66b3, #00ff00b3);
-    --line-summer:  linear-gradient(to right, #ff6600b3, #ff0000b3);
-    --line-newyear: linear-gradient(to right, #ff0000b3 3%, #ffaa00b3 27%, #00ff00b3 65%, #0066ffb3 100%);
+    --line-winter:                linear-gradient(to right, #00aaffb3, #0066ffb3);
+    --line-autumn:                linear-gradient(to right, #ffff00b3, #ffaa00b3);
+    --line-spring:                linear-gradient(to right, #00ff66b3, #00ff00b3);
+    --line-summer:                linear-gradient(to right, #ff6600b3, #ff0000b3);
+    --line-newyear:               linear-gradient(to right, #ff0000b3 3%, #ffaa00b3 27%, #00ff00b3 65%, #0066ffb3 100%);
+    --line-general:               linear-gradient(90deg, rgba(0, 0, 255, 0.56) 0%, rgba(0, 255, 0, 0.64) 23.74%, rgba(255, 0, 0, 0.56) 58.09%, rgba(255, 255, 0, 0.64) 82.98%, rgba(0, 0, 255, 0.56) 100%);
 
-    --UI-winter:  #007aff33;
-    --UI-autumn:  #ff7a0033;
-    --UI-spring:  #00ff3333;
-    --UI-summer:  #ff000033;
-    --UI-newyear: #00ff3333;
+    --UI-winter:                  #007aff33;
+    --UI-autumn:                  #ff7a0033;
+    --UI-spring:                  #00ff3333;
+    --UI-summer:                  #ff000033;
+    --UI-newyear:                 #ff00ff33;
     
     --UI-icon-neutral:            #ffffff  ;
     --UI-icon-neutral-op:         #ffffff40;

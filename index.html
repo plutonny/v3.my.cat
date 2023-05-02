@@ -6,7 +6,7 @@
         <meta   http-equiv="Permissions-Policy"     content="interest-cohort=()">
         <meta   http-equiv="Cache-Control"          content="no-cache">
         <meta   http-equiv="Pragma"                 content="no-cache">
-        <meta   name="viewport"                     content="width=device-width, initial-scale=1.0">
+        <meta   name="viewport"                     content="width=device-width, initial-scale=1">
         <meta   name="author"                       content="Plutonny">
         <meta   name="description"                  content="my cat ❤️">
         <meta   name="theme-color" id="theme-color" content="#000000">
@@ -84,7 +84,7 @@
                 theme: function() {
                     plutonny.output('theming', `
                     .page {
-                        background: radial-gradient(100% 42.56% at 0% 0%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0.2) 100%), #000000;
+                        background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(75.16% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), #000000;
                     }
                     `)
                 },
@@ -369,9 +369,14 @@
             </div>
         </div>
 
+        <!-- PAGE CREATOR -->
         <script type="text/javascript">
             function pageCreator(page) {
-                console.log(page)
+                if (page == 'home') {
+                    plutonny.output('currentStyling', `
+                    .lineGeneral { background: var(--line-general); }
+                    `)
+                }
             }
             pageCreator('home')
         </script>
