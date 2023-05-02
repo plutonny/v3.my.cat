@@ -84,7 +84,7 @@
                 theme: function() {
                     plutonny.output('theming', `
                     .page {
-                        background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(75.16% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), #000000;
+                        background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(87.62% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), #000000;
                     }
                     `)
                 },
@@ -373,8 +373,14 @@
         <script type="text/javascript">
             function pageCreator(page) {
                 if (page == 'home') {
-                    plutonny.output('currentStyling', `
-                    .lineGeneral { background: var(--line-general); }
+                    let j1 = new Date(DATESTATIC.getFullYear(), 0, 1), d3 = new Date(DATESTATIC.getFullYear(), 11, 31, 23, 59, 59)
+                    let yearP = (document.documentElement.clientWidth - 94) * ((j1 - DATESTATIC) / (j1 - d3))
+                    plutonny.output('lineGeneral', `
+                    <div style="background: var(--line-general); height: 100%; width: 100%;">
+                        <div style="position: absolute; background: var(--con-color); height: 60px; padding: 0 3px; margin-top: -6px; left: calc(42px + ${yearP}px);">
+                            <div style="background: var(--text-color); height: 60px; width: 4px; border-radius: 100px;"></div>
+                        </div>
+                    </div>
                     `)
                 }
             }

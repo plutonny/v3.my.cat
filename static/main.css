@@ -79,6 +79,7 @@ button:active { background-color: var(--button-color-active) !important; cursor:
     width: 100%;
     background: var(--line-general-color);
     border-radius: 100px;
+    overflow: hidden;
 }
 .blockAdd { 
     height: 0px;
