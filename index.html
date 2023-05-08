@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.0.js?cache=27.04.2023-v300-b14"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=27.04.2023-v300-b14" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=27.04.2023-v300-b14">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=27.04.2023-v300-b14">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=05.05.2023-v300-b15"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=05.05.2023-v300-b15" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=05.05.2023-v300-b15">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=05.05.2023-v300-b15">
         <style  id="theming"                        ></style>
         <style  id="currentStyling"                 ></style>
 
@@ -67,20 +67,27 @@
             "use strict";
             
             var siteVersion = '3.0.0'
-            var siteBuild = '14'
+            var siteBuild = '15'
 
             var DATESTATIC = new Date()
             var SEASON = ''
-            let dec10 = new Date(DATESTATIC.getFullYear(), 11, 10), jan20 = new Date(DATESTATIC.getFullYear(), 0, 20), dec31 = new Date(DATESTATIC.getFullYear(), 11, 31), jan01 = new Date(DATESTATIC.getFullYear(), 0, 1)
+            let dec10 = new Date(DATESTATIC.getFullYear(), 11, 10), jan20 = new Date(DATESTATIC.getFullYear(), 0, 20, 23, 59, 59, 999), dec31 = new Date(DATESTATIC.getFullYear(), 11, 31, 23, 59, 59, 999), jan01 = new Date(DATESTATIC.getFullYear(), 0, 1)
             if ((dec10 <= DATESTATIC && DATESTATIC <= dec31) || (jan01 <= DATESTATIC && DATESTATIC <= jan20)) { SEASON = 'newyear' }
             else { if ([11, 0, 1].includes(DATESTATIC.getMonth())) SEASON = 'winter'; if ([2, 3, 4].includes(DATESTATIC.getMonth())) SEASON = 'spring'; if ([5, 6, 7].includes(DATESTATIC.getMonth())) SEASON = 'summer'; if ([8, 9, 10].includes(DATESTATIC.getMonth())) SEASON = 'autumn' }
-
-            function addScript(src){ var script = document.createElement('script'); script.type = 'text/javascript'; script.src = src; script.async = false; document.head.appendChild(script) }
         </script>
 
         <!-- UX -->
         <script type="text/javascript">
             var UX = {
+                dateThisYear: function(date, time) {
+                    let cdd
+                    try {
+                        cdd = new Date(DATESTATIC.getFullYear(), date.split('-')[0] - 1, date.split('-')[1], time.split(':')[0], time.split(':')[1])
+                    } catch {
+                        cdd = new Date(DATESTATIC.getFullYear(), date.split('-')[0] - 1, date.split('-')[1], 0, 0, 0)
+                    }
+                    return cdd
+                },
                 theme: function() {
                     plutonny.output('theming', `
                     .page {
@@ -114,6 +121,35 @@
         <!-- UI -->
         <script type="text/javascript">
             var UI = {
+                eventText: function(size, event) {
+                    switch(size) {
+                        case 'small':
+                            return `<div style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                ${plutonny.UI.gIcon({
+                                    size: 36,
+                                    border: 100,
+                                    color: event.color,
+                                    icon: event.icon,
+                                    font: 24
+                                })}
+                                <div style="width: 12px;"></div>
+                                <p style="margin: 0;">${event.nameText} (${COUNT.fastDay(DATESTATIC, UX.dateThisYear(event.date, event.time))} дн.)</p>
+                                </div>`
+                        case 'large':
+                            return `<div style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center;">
+                                ${plutonny.UI.gIcon({
+                                    size: 36,
+                                    border: 100,
+                                    color: event.color,
+                                    icon: event.icon,
+                                    font: 24
+                                })}
+                                <div style="width: 12px;"></div>
+                                <p style="margin: 0;">${event.nameText}</p>
+                                </div>`
+                    }
+                    
+                },
                 header: function(settings) {
                     try {
                         plutonny.output(`header`, `
@@ -136,7 +172,7 @@
                                     `<span onclick="history.back()" class="material-symbols-rounded icoGo" style="font-size: 32px !important;">arrow_back</span>` : ''}
                                 </div>
                                 <div style="margin-right: auto;"></div>
-                                <p style="text-align: center; font-size: 32px; margin: 0; z-index: 10;" onclick="addScript('//cdn.jsdelivr.net/npm/eruda?t=${DATESTATIC.getTime()}'); eruda.init()">${settings.textCenter}</p>
+                                <p style="text-align: center; font-size: 32px; margin: 0; z-index: 10;" class="bold" onclick="plutonny.get.eruda()">${settings.textCenter}</p>
                                 ${settings.addHeart ? `<div style="width: 8px;"></div>
                                                        <img src="static/emoji/heart.png" height="32px" width="32px">` : ''}
                                 <div style="margin-right: auto;"></div>
@@ -154,68 +190,6 @@
                         return false
 
                     }
-                },
-                cIcon: function(settings) {
-                    let colinj = {}
-                    if (settings.color[0] == '#') colinj = {
-                        icon: settings.color, 
-                        button: `${settings.color}40`
-                    }
-                    else colinj = {
-                        icon: `var(--UI-icon-${settings.color})`, 
-                        button: `var(--UI-icon-${settings.color}-op)`
-                    }
-                    return `
-                        <div style="user-select: none; height: ${settings.size}px; width: ${settings.size}px; display: flex; align-content: center; justify-content: center; align-items: center; background-color: ${colinj.button}; border-radius: ${settings.border}px">
-                            <span style="color: ${colinj.icon}; font-size: ${settings.font}px;" class="material-symbols-rounded icoGo">${settings.icon}</span>
-                        </div>
-                    `
-                },
-                rus: function(format, number) {
-                    try {
-                        var n    = Math.floor(number % 10)
-                        var n100 = Math.floor(number % 100)
-
-                        var u1 = [11, 12, 13, 14, 15, 16, 17, 18, 19].includes(n100),
-                            u2 = n == 1,
-                            u3 = [2, 3, 4].includes(n),
-                            u4 = [5, 6, 7, 8, 9, 0].includes(n)
-
-                        switch (format) {
-                            case 'week':
-                                if (u1 || u4) return number + ' недель'
-                                if (u2) return number + ' неделя'
-                                if (u3) return number + ' недели'
-                                break
-                            case 'day':
-                                if (u1 || u4) return number + ' дней'
-                                if (u2) return number + ' день'
-                                if (u3) return number + ' дня'
-                                break
-                            case 'hour':
-                                if (u1 || u4) return number + ' часов'
-                                if (u2) return number + ' час'
-                                if (u3) return number + ' часа'
-                                break
-                            case 'minute':
-                                if (u1 || u4) return number + ' минут'
-                                if (u2) return number + ' минута'
-                                if (u3) return number + ' минуты'
-                                break
-                            case 'second':
-                                if (u1 || u4) return number + ' секунд'
-                                if (u2) return number + ' секунда'
-                                if (u3) return number + ' секунды'
-                                break
-                            case 'milisecond':
-                                if (u1 || u4) return number + ' миллисекунд'
-                                if (u2) return number + ' миллисекунда'
-                                if (u3) return number + ' миллисекунды'
-                                break
-                            default:
-                                return 'ошибка'
-                        }
-                    } catch (e) { plutonny.console.error('UI.rus()', e) }
                 }
             }
         </script>
@@ -223,9 +197,12 @@
         <!-- counters -->
         <script type="text/javascript">
             var COUNT = {
-                fast: function(START, END) {
+                fastPer: function(START, END) {
                     let p = (START - DATESTATIC) / (START - END) * 100
                     return `${(parseFloat(parseInt(p * 10)) % 10) > 7 ? parseInt(p + 1) : parseInt(p)} %`
+                },
+                fastDay: function(START, END) {
+                    return Math.floor(((END - START) / 1000 / 60 / 60 / 24))
                 },
                 general: async function(START, END, textPROCESS, textEND) {
                     let NOW = new Date()
@@ -374,14 +351,32 @@
             function pageCreator(page) {
                 if (page == 'home') {
                     let j1 = new Date(DATESTATIC.getFullYear(), 0, 1), d3 = new Date(DATESTATIC.getFullYear(), 11, 31, 23, 59, 59)
-                    let yearP = (document.documentElement.clientWidth - 94) * ((j1 - DATESTATIC) / (j1 - d3))
+                    let yearP = 0
+                    if (document.documentElement.clientWidth <= 540) {
+                        yearP = (document.documentElement.clientWidth - 94) * ((j1 - DATESTATIC) / (j1 - d3))
+                    } else { 
+                        yearP = ((440 - 94) * ((j1 - DATESTATIC) / (j1 - d3)))
+                    }
                     plutonny.output('lineGeneral', `
                     <div style="background: var(--line-general); height: 100%; width: 100%;">
-                        <div style="position: absolute; background: var(--con-color); height: 60px; padding: 0 3px; margin-top: -6px; left: calc(42px + ${yearP}px);">
+                        <div style="position: absolute; background: var(--con-color); height: 60px; padding: 0 3px; margin-top: -6px; margin-left: ${yearP}px;">
                             <div style="background: var(--text-color); height: 60px; width: 4px; border-radius: 100px;"></div>
                         </div>
                     </div>
                     `)
+                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(function (counters) {
+                        let dbc = [], dbd = []
+                        for (let i = 1; i <= counters.count; i++) {
+                            let cd = new Date(`${DATESTATIC.getFullYear()}-${counters[i].date}`)
+                            if ((cd - DATESTATIC) > 0) dbc.push([i, cd.getTime()])
+                        }
+                        for (let i in dbc) dbd.push(dbc[i][1])
+                        let fastestEvent = dbc[dbd.indexOf(Math.min(...dbd))][0]
+                        plutonny.output('textGeneral', `
+                        <p style="font-size: 20px; margin: 14px 0 8px 0;">ближайшее событие:</p>
+                        ${UI.eventText('small', counters[fastestEvent])}
+                        `)
+                    }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(home) -> JSON (DBCOUNT)', err) })
                 }
             }
             pageCreator('home')

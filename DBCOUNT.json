@@ -1,0 +1,40 @@
+{
+    "1": {
+        "type": "timeInYear",
+        "nameText": "годовщина отношений",
+        "processText": "до годовщины",
+        "endText": "с годовщиной",
+        "date": "5-27",
+        "time": "22:14",
+        "icon": "group",
+        "color": "blue"
+    },
+    "2": {
+        "type": "dayInYear",
+        "nameText": "день рождения Макса",
+        "processText": "до дня рождения Макса",
+        "endText": "с днем рождения, Макс!",
+        "date": "6-11",
+        "icon": "person_celebrate",
+        "color": "red"
+    },
+    "3": {
+        "type": "dayInYear",
+        "nameText": "день рождения Вити",
+        "processText": "до дня рождения Вити",
+        "endText": "с днем рождения, Витя!",
+        "date": "8-22",
+        "icon": "emoji_nature",
+        "color": "yellow"
+    },
+    "4": {
+        "type": "dayInYear",
+        "nameText": "nameText",
+        "processText": "processText",
+        "endText": "endText",
+        "date": "5-28",
+        "icon": "table",
+        "color": "neutral"
+    },
+    "count": 4
+}
