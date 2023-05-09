@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=05.05.2023-v300-b15"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=05.05.2023-v300-b15" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=05.05.2023-v300-b15">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=05.05.2023-v300-b15">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=09.05.2023-v300-b16"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=09.05.2023-v300-b16" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=09.05.2023-v300-b16">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=09.05.2023-v300-b16">
         <style  id="theming"                        ></style>
         <style  id="currentStyling"                 ></style>
 
@@ -66,8 +66,8 @@
         <script type="text/javascript">
             "use strict";
             
-            var siteVersion = '3.0.0'
-            var siteBuild = '15'
+            var siteVersion = '3.0'
+            var siteBuild = '16'
 
             var DATESTATIC = new Date()
             var SEASON = ''
@@ -79,6 +79,16 @@
         <!-- UX -->
         <script type="text/javascript">
             var UX = {
+                datePrepare: function(date) {
+                    let d1, d2
+                    if (date < DATESTATIC) { 
+                        d1 = new Date(new Date(DATESTATIC.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()))
+                        d2 = new Date(new Date(DATESTATIC.getFullYear() + 1, date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()))
+                    } else {
+                        d1 = new Date(new Date(DATESTATIC.getFullYear() - 1, date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()))  
+                        d2 = new Date(new Date(DATESTATIC.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()))
+                    } return [d1, d2]
+                },
                 dateThisYear: function(date, time) {
                     let cdd
                     try {
@@ -121,31 +131,38 @@
         <!-- UI -->
         <script type="text/javascript">
             var UI = {
-                eventText: function(size, event) {
+                event: function(size, event) {
                     switch(size) {
                         case 'small':
                             return `<div style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center;">
-                                ${plutonny.UI.gIcon({
-                                    size: 36,
-                                    border: 100,
-                                    color: event.color,
-                                    icon: event.icon,
-                                    font: 24
-                                })}
+                                <div style="height: 36px; width: 36px;">
+                                    ${plutonny.UI.gIcon({
+                                        size: 36,
+                                        border: 100,
+                                        color: event.color,
+                                        icon: event.icon,
+                                        font: 24
+                                    })}
+                                </div>
                                 <div style="width: 12px;"></div>
-                                <p style="margin: 0;">${event.nameText} (${COUNT.fastDay(DATESTATIC, UX.dateThisYear(event.date, event.time))} дн.)</p>
+                                <p style="font-size: 15px; margin: 0;">${event.nameText} <small style="font-size: 12px; margin: 0;">(${COUNT.fastDay(DATESTATIC, UX.dateThisYear(event.date, event.time))}&nbsp;дн.)</small></p>
                                 </div>`
                         case 'large':
-                            return `<div style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center;">
-                                ${plutonny.UI.gIcon({
-                                    size: 36,
-                                    border: 100,
-                                    color: event.color,
-                                    icon: event.icon,
-                                    font: 24
-                                })}
-                                <div style="width: 12px;"></div>
-                                <p style="margin: 0;">${event.nameText}</p>
+                            let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
+                            return `<div onclick="" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); border-radius: 24px; margin-bottom: 16px; padding: 18px;">
+                                <div style="height: 42px; width: 42px;">
+                                    ${plutonny.UI.gIcon({
+                                        size: 42,
+                                        border: 100,
+                                        color: event.color,
+                                        icon: event.icon,
+                                        font: 32
+                                    })}
+                                </div>
+                                <div style="width: 16px;"></div>
+                                <p style="font-size: 16px; margin: 0;">${event.nameText}</p>
+                                <div style="margin-right: auto;"></div>
+                                <p style="font-size: 24px; margin: 0 0 0 8px;">${COUNT.fastPer(d1, d2)}</p>
                                 </div>`
                     }
                     
@@ -199,7 +216,7 @@
             var COUNT = {
                 fastPer: function(START, END) {
                     let p = (START - DATESTATIC) / (START - END) * 100
-                    return `${(parseFloat(parseInt(p * 10)) % 10) > 7 ? parseInt(p + 1) : parseInt(p)} %`
+                    return `${(parseFloat(parseInt(p * 10)) % 10) > 7 ? parseInt(p + 1) : parseInt(p)}&nbsp;%`
                 },
                 fastDay: function(START, END) {
                     return Math.floor(((END - START) / 1000 / 60 / 60 / 24))
@@ -342,6 +359,7 @@
                     </div>
                     <div style="height: 24px;"></div>
                     <div class="blockAdd" id="blockAdd"></div>
+                    <div class="contentOt" id="contentOt"></div>
                 </div>
             </div>
         </div>
@@ -374,7 +392,17 @@
                         let fastestEvent = dbc[dbd.indexOf(Math.min(...dbd))][0]
                         plutonny.output('textGeneral', `
                         <p style="font-size: 20px; margin: 14px 0 8px 0;">ближайшее событие:</p>
-                        ${UI.eventText('small', counters[fastestEvent])}
+                        ${UI.event('small', counters[fastestEvent])}
+                        `)
+                        let injEvent = ''
+                        for (let i = 1; i <= counters.count; i++) injEvent += UI.event('large', counters[i])
+                        plutonny.output('contentOt', `
+                        <p class="bold" style="font-size: 32px; margin: 0; padding-left: 6px;">все события:</p>
+                        <div style="height: 24px;"></div>
+                        ${injEvent}
+                        <div onclick="" style="background: var(--con-color); height: 32px; border-radius: 100px; margin-top: 16px; display: flex; justify-content: center; align-items: center;">
+                            <p style="margin: 0;">настройки</p>
+                        </div>
                         `)
                     }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(home) -> JSON (DBCOUNT)', err) })
                 }

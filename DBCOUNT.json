@@ -15,7 +15,7 @@
         "processText": "до дня рождения Макса",
         "endText": "с днем рождения, Макс!",
         "date": "6-11",
-        "icon": "person_celebrate",
+        "icon": "celebration",
         "color": "red"
     },
     "3": {
@@ -32,7 +32,7 @@
         "nameText": "nameText",
         "processText": "processText",
         "endText": "endText",
-        "date": "5-28",
+        "date": "6-1",
         "icon": "table",
         "color": "neutral"
     },
