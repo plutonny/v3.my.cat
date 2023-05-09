@@ -7,10 +7,9 @@
     --text-color-active:          #eeeeee;
     --bg-color:                   #000000;
     --con-color:                  #101010;
+    --con-color-hover:            #151515;
+    --con-color-active:           #202020;
     --line-general-color:         #60606040;
-    --button-color:               #303030;
-    --button-color-hover:         #353535;
-    --button-color-active:        #404040;
     --button-con-color:           #303030;
     --button-con-color-hover:     #353535;
     --button-con-color-active:    #404040;
@@ -60,9 +59,17 @@ h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::s
 h1::-moz-selection, h2::-moz-selection, h3::-moz-selection, h4::-moz-selection, h5::-moz-selection, h6::-moz-selection, p::-moz-selection, a::-moz-selection, b::-moz-selection, td::-moz-selection, div::-moz-selection, svg::-moz-selection, li::-moz-selection, img::-moz-selection, button::-moz-selection, br::-moz-selection, input::-moz-selection, label::-moz-selection, span::-moz-selection, iframe::-moz-selection { background-color: var(--icon-color); color: var(--text-color-active); }
 a:active { color: var(--text-color-active); }
 
-button { background-color: var(--button-color); border: 0; cursor: pointer; border-radius: 24px; font-size: 17px; padding: 8px 16px; }
-button:hover { background-color: var(--button-color-hover) !important; cursor: pointer; }
-button:active { background-color: var(--button-color-active) !important; cursor: pointer; }
+button { background-color: var(--con-color); border: 0; cursor: pointer; border-radius: 24px; font-size: 17px; padding: 8px 16px; }
+button:hover { background-color: var(--con-color-hover) !important; cursor: pointer; }
+button:active { background-color: var(--con-color-active) !important; cursor: pointer; }
+
+.conHA { background: var(--con-color); cursor: pointer;}
+.conHA:hover { background: var(--con-color-hover) !important; cursor: pointer; }
+.conHA:active { background: var(--con-color-active) !important; cursor: pointer; }
+
+.BconHA { background: var(--button-con-color); cursor: pointer;}
+.BconHA:hover { background: var(--button-con-color-hover) !important; cursor: pointer; }
+.BconHA:active { background: var(--button-con-color-active) !important; cursor: pointer; }
 
 .page, .pageble { min-height: 100vh; }
 .content { padding: 24px 24px 96px 24px; }

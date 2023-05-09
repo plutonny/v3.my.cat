@@ -55,19 +55,19 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=09.05.2023-v300-b16"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=09.05.2023-v300-b16" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=09.05.2023-v300-b16">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=09.05.2023-v300-b16">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=09.05.2023-v300-b17"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=09.05.2023-v300-b17" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=09.05.2023-v300-b17">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=09.05.2023-v300-b17">
         <style  id="theming"                        ></style>
-        <style  id="currentStyling"                 ></style>
+        <style  id="animationEngine"                ></style>
 
         <!-- GLOBAL VARIABLES -->
         <script type="text/javascript">
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '16'
+            var siteBuild = '17'
 
             var DATESTATIC = new Date()
             var SEASON = ''
@@ -104,16 +104,16 @@
                         background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(87.62% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), #000000;
                     }
                     `)
+                    document.getElementById('theme-color').content = '#000000'
                 },
                 modal: async function(content) {
                     try {
                         await plutonny.sleep(200)
-                        plutonny.console.error('index.html -> UX.modal()', 'ЦВЕТ СТРОКИ СОСТОЯНИЯ УКАЖИ')
-                        document.getElementById('theme-color').content = '#2a2a2a'
+                        document.getElementById('theme-color').content = '#101010'
                         plutonny.output('modal', `
                             <div class="max-modal">
                                 <style>
-                                    div#modal { position: fixed; height: 100vh; width: 100vw; background-color :#40404075; display: flex; justify-content: center; align-items: center; z-index: 100; }
+                                    div#modal { position: fixed; height: 100vh; width: 100vw; background-color :#40404040; display: flex; justify-content: center; align-items: center; z-index: 100; }
                                 </style>
                                 ${content}
                             </div>
@@ -149,14 +149,14 @@
                                 </div>`
                         case 'large':
                             let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
-                            return `<div onclick="" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); border-radius: 24px; margin-bottom: 16px; padding: 18px;">
+                            return `<div onclick="" class="conHA" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); border-radius: 24px; margin-bottom: 16px; padding: 18px;">
                                 <div style="height: 42px; width: 42px;">
                                     ${plutonny.UI.gIcon({
                                         size: 42,
                                         border: 100,
                                         color: event.color,
                                         icon: event.icon,
-                                        font: 32
+                                        font: 28
                                     })}
                                 </div>
                                 <div style="width: 16px;"></div>
@@ -185,8 +185,8 @@
                                     }
                                 </style>
                                 <div style="height: 38px; width: 38px; z-index: 90; fill: currentColor; margin: 0 0 0 12px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                    ${settings.buttonBack ? 
-                                    `<span onclick="history.back()" class="material-symbols-rounded icoGo" style="font-size: 32px !important;">arrow_back</span>` : ''}
+                                    ${settings.buttonBack != 'none' ? 
+                                    `<span onclick="${settings.buttonBack}" class="material-symbols-rounded icoGo" style="font-size: 32px !important;">arrow_back</span>` : ''}
                                 </div>
                                 <div style="margin-right: auto;"></div>
                                 <p style="text-align: center; font-size: 32px; margin: 0; z-index: 10;" class="bold" onclick="plutonny.get.eruda()">${settings.textCenter}</p>
@@ -347,7 +347,7 @@
                     <script>
                         UI.header({
                             textCenter: 'my cat',
-                            buttonBack: false,
+                            buttonBack: 'none',
                             addHeart: true
                         })
                     </script>
@@ -364,10 +364,98 @@
             </div>
         </div>
 
+        <!-- settings functions -->
+        <script type="text/javascript">
+            function clearCache() {
+                caches.delete('v3-mycat-byPlutonny')
+                caches.delete('mycat-byPlutonny')
+                plutonny.output('CCB', 'успешно')
+            }
+            function cd() {
+                try {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for(let registration of registrations) {
+                            registration.unregister();
+                        } 
+                    });
+                    caches.delete('v3-mycat-byPlutonny')
+                    caches.delete('mycat-byPlutonny')
+                    localStorage.clear()
+                    sessionStorage.clear()
+                }
+                catch (e) { plutonny.console.error('index.html -> settings -> cd()', e) }
+                plutonny.output('content', `
+                <h1 align="center">успешно</h1>
+                <p align="center">теперь перезагрузите страницу</p>
+                <div style="display: flex; justify-content: center; margin-top: 24px;">
+                    <button onclick="location.reload()">перезагрузить</button>
+                </div>`)
+            }
+            function clearData() {
+                UX.modal(`
+                    <div style="margin: 0 18px; max-height: 95%; overflow-y: auto; background-color: var(--bg-color); border: none; border-radius: 24px; box-shadow: 0px 0px 8px var(--box-shadow-color);">
+                        <h1 style="font-family: 'Montserrat' !important; text-align: center; margin: 16px;">уверен?</h1>
+                        <div style="display: flex; justify-content: center;">
+                            <button style="cursor: pointer; width: 128px; margin: 4px 16px 16px 16px; background-color: #00ff0020;" onclick="document.getElementById('modal').innerHTML = ''; UX.theme()">НЕТ</button>
+                            <button style="cursor: pointer; width: 128px; margin: 4px 16px 16px 16px; background-color: #ff000020;" onclick="document.getElementById('modal').innerHTML = ''; UX.theme(); cd()">ДА</button>
+                        </div>
+                    </div>
+                `)
+            }
+        </script>
+
+        <!-- ANIMATION ENGINE -->
+        <script type="text/javascript">
+            var animationEngine = {
+                blockGeneral: async function(func) {
+                    if (func == 'clear') {
+                        document.getElementById('animationEngine').innerHTML += `.lineGeneral, .textGeneral { opacity: 0; }`
+                        await plutonny.sleep(400)
+                        document.getElementById('blockGeneral').innerHTML = ``
+                    }
+                    if (func == 'heightNone') {
+                        document.getElementById('animationEngine').innerHTML += `.blockGeneral { min-height: 0 !important; }`
+                    }
+                    if (func == 'Rop0') {
+                        document.getElementById('animationEngine').innerHTML += `.blockGeneral { opacity: 1 !important; }`
+                    }
+                },
+                blockAdd: function(func) {
+
+                },
+                contentOt: async function(func) {
+                    if (func == 'clear') {
+                        document.getElementById('animationEngine').innerHTML += `.contentOt { opacity: 0; }`
+                        await plutonny.sleep(400)
+                        document.getElementById('contentOt').innerHTML = ``
+                    }
+                },
+                blockSettings: async function(func) {
+                    if (func == 'Rop0') {
+                        document.getElementById('animationEngine').innerHTML += `.blockSettings { opacity: 1 !important; }`
+                    }
+                },
+                homeAll: async function(func) {
+                    if (func == 'op0') {
+                        document.getElementById('animationEngine').innerHTML += `.lineGeneral, .contentOt, .textGeneral { opacity: 0 !important; display: none; }`
+                    }
+                    if (func == 'Rop0') {
+                        document.getElementById('animationEngine').innerHTML += `.lineGeneral, .contentOt, .textGeneral { display: inherit !important; }`
+                        await plutonny.sleep(400)
+                        document.getElementById('animationEngine').innerHTML = `.lineGeneral, .contentOt, .textGeneral { opacity: 1 !important; }`
+                    }
+                },
+                RESTORE: function() {
+                    document.getElementById('animationEngine').innerHTML = ``
+                }
+            }
+        </script>
+
         <!-- PAGE CREATOR -->
         <script type="text/javascript">
-            function pageCreator(page) {
-                if (page == 'home') {
+            var pageCreator = {
+                firstLoad: async function() {
+                    animationEngine.homeAll('op0')
                     let j1 = new Date(DATESTATIC.getFullYear(), 0, 1), d3 = new Date(DATESTATIC.getFullYear(), 11, 31, 23, 59, 59)
                     let yearP = 0
                     if (document.documentElement.clientWidth <= 540) {
@@ -382,7 +470,7 @@
                         </div>
                     </div>
                     `)
-                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(function (counters) {
+                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(async function (counters) {
                         let dbc = [], dbd = []
                         for (let i = 1; i <= counters.count; i++) {
                             let cd = new Date(`${DATESTATIC.getFullYear()}-${counters[i].date}`)
@@ -400,14 +488,49 @@
                         <p class="bold" style="font-size: 32px; margin: 0; padding-left: 6px;">все события:</p>
                         <div style="height: 24px;"></div>
                         ${injEvent}
-                        <div onclick="" style="background: var(--con-color); height: 32px; border-radius: 100px; margin-top: 16px; display: flex; justify-content: center; align-items: center;">
+                        <div class="conHA" onclick="pageCreator.settings()" style="background: var(--con-color); height: 32px; border-radius: 100px; margin-top: 16px; display: flex; justify-content: center; align-items: center;">
                             <p style="margin: 0;">настройки</p>
                         </div>
                         `)
+                        await plutonny.sleep(400)
+                        animationEngine.homeAll('Rop0')
                     }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(home) -> JSON (DBCOUNT)', err) })
+                },
+                settings: async function() {
+                    UI.header({
+                        textCenter: 'настройки',
+                        buttonBack: `pageCreator.fSHome()`,
+                        addHeart: false
+                    })
+                    animationEngine.contentOt('clear')
+                    animationEngine.blockGeneral('clear')
+                    await plutonny.sleep(400)
+                    animationEngine.blockGeneral('heightNone')
+                    plutonny.output('blockGeneral', `
+                    <div class="blockSettings" style="opacity: 0;">
+                        <div class="BconHA" id="CCB" onclick="clearCache()" style="background: var(--button-con-color); border-radius: 100px; height: 32px; display: flex; align-items: center; justify-content: center;">удалить кэш</div>    
+                        <div style="height: 18px;"></div>
+                        <div class="BconHA" onclick="clearData()" style="background: var(--button-con-color); border-radius: 100px; height: 32px; display: flex; align-items: center; justify-content: center;">удалить все данные</div>    
+                    </div>
+                    `)
+                    await plutonny.sleep(100)
+                    animationEngine.blockSettings('Rop0')
+                },
+                fSHome: async function() {
+                    UI.header({
+                        textCenter: 'my cat',
+                        buttonBack: 'none',
+                        addHeart: true
+                    })
+                    animationEngine.RESTORE()
+                    plutonny.output('blockGeneral', `
+                        <div class="lineGeneral" id="lineGeneral"></div>
+                        <div class="textGeneral" id="textGeneral"></div>
+                    `)
+                    pageCreator.firstLoad()
                 }
             }
-            pageCreator('home')
+            pageCreator.firstLoad()
         </script>
 
     </body>
