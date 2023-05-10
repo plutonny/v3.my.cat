@@ -27,14 +27,5 @@
         "icon": "emoji_nature",
         "color": "yellow"
     },
-    "4": {
-        "type": "dayInYear",
-        "nameText": "nameText",
-        "processText": "processText",
-        "endText": "endText",
-        "date": "6-1",
-        "icon": "table",
-        "color": "neutral"
-    },
-    "count": 4
+    "count": 3
 }

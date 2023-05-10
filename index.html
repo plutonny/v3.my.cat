@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=09.05.2023-v300-b17"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=09.05.2023-v300-b17" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=09.05.2023-v300-b17">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=09.05.2023-v300-b17">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=10.05.2023-v300-b18"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=10.05.2023-v300-b18" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=10.05.2023-v300-b18">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=10.05.2023-v300-b18">
         <style  id="theming"                        ></style>
         <style  id="animationEngine"                ></style>
 
@@ -67,7 +67,7 @@
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '17'
+            var siteBuild = '18'
 
             var DATESTATIC = new Date()
             var SEASON = ''
@@ -100,7 +100,8 @@
                 },
                 theme: function() {
                     plutonny.output('theming', `
-                    .page {
+                    .page { 
+                        background-attachment: fixed !important;
                         background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(87.62% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), #000000;
                     }
                     `)
@@ -407,43 +408,30 @@
         <!-- ANIMATION ENGINE -->
         <script type="text/javascript">
             var animationEngine = {
-                blockGeneral: async function(func) {
-                    if (func == 'clear') {
-                        document.getElementById('animationEngine').innerHTML += `.lineGeneral, .textGeneral { opacity: 0; }`
-                        await plutonny.sleep(400)
-                        document.getElementById('blockGeneral').innerHTML = ``
-                    }
-                    if (func == 'heightNone') {
-                        document.getElementById('animationEngine').innerHTML += `.blockGeneral { min-height: 0 !important; }`
-                    }
-                    if (func == 'Rop0') {
-                        document.getElementById('animationEngine').innerHTML += `.blockGeneral { opacity: 1 !important; }`
-                    }
-                },
-                blockAdd: function(func) {
-
-                },
-                contentOt: async function(func) {
-                    if (func == 'clear') {
-                        document.getElementById('animationEngine').innerHTML += `.contentOt { opacity: 0; }`
+                transfer: async function(tag) {
+                    if (tag == 'home>settings') {
+                        document.getElementById('animationEngine').innerHTML += `
+                        .contentOt { opacity: 0; }
+                        .lineGeneral, .textGeneral { opacity: 0; }`
                         await plutonny.sleep(400)
                         document.getElementById('contentOt').innerHTML = ``
+                        document.getElementById('blockGeneral').innerHTML = ``
+                        document.getElementById('animationEngine').innerHTML = `.blockGeneral { min-height: 0 !important; }`
                     }
                 },
-                blockSettings: async function(func) {
-                    if (func == 'Rop0') {
-                        document.getElementById('animationEngine').innerHTML += `.blockSettings { opacity: 1 !important; }`
-                    }
-                },
-                homeAll: async function(func) {
-                    if (func == 'op0') {
-                        document.getElementById('animationEngine').innerHTML += `.lineGeneral, .contentOt, .textGeneral { opacity: 0 !important; display: none; }`
-                    }
-                    if (func == 'Rop0') {
+                Rop0: async function(tag) {
+                    if (tag == 'homeAll') {
                         document.getElementById('animationEngine').innerHTML += `.lineGeneral, .contentOt, .textGeneral { display: inherit !important; }`
                         await plutonny.sleep(400)
-                        document.getElementById('animationEngine').innerHTML = `.lineGeneral, .contentOt, .textGeneral { opacity: 1 !important; }`
-                    }
+                        document.getElementById('animationEngine').innerHTML = `.lineGeneral, .contentOt, .textGeneral { opacity: 1; }`
+                    } else
+                        document.getElementById('animationEngine').innerHTML += `.${tag} { opacity: 1 !important; }`
+                },
+                op0: async function(tag) {
+                    if (tag == 'homeAll')
+                        document.getElementById('animationEngine').innerHTML += `.lineGeneral, .contentOt, .textGeneral { opacity: 0 !important; display: none; }`
+                    else
+                        document.getElementById('animationEngine').innerHTML += `.${tag} { opacity: 0; }`
                 },
                 RESTORE: function() {
                     document.getElementById('animationEngine').innerHTML = ``
@@ -455,7 +443,7 @@
         <script type="text/javascript">
             var pageCreator = {
                 firstLoad: async function() {
-                    animationEngine.homeAll('op0')
+                    animationEngine.op0('homeAll')
                     let j1 = new Date(DATESTATIC.getFullYear(), 0, 1), d3 = new Date(DATESTATIC.getFullYear(), 11, 31, 23, 59, 59)
                     let yearP = 0
                     if (document.documentElement.clientWidth <= 540) {
@@ -493,7 +481,7 @@
                         </div>
                         `)
                         await plutonny.sleep(400)
-                        animationEngine.homeAll('Rop0')
+                        animationEngine.Rop0('homeAll')
                     }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(home) -> JSON (DBCOUNT)', err) })
                 },
                 settings: async function() {
@@ -502,10 +490,7 @@
                         buttonBack: `pageCreator.fSHome()`,
                         addHeart: false
                     })
-                    animationEngine.contentOt('clear')
-                    animationEngine.blockGeneral('clear')
-                    await plutonny.sleep(400)
-                    animationEngine.blockGeneral('heightNone')
+                    await animationEngine.transfer('home>settings')
                     plutonny.output('blockGeneral', `
                     <div class="blockSettings" style="opacity: 0;">
                         <div class="BconHA" id="CCB" onclick="clearCache()" style="background: var(--button-con-color); border-radius: 100px; height: 32px; display: flex; align-items: center; justify-content: center;">удалить кэш</div>    
@@ -514,7 +499,7 @@
                     </div>
                     `)
                     await plutonny.sleep(100)
-                    animationEngine.blockSettings('Rop0')
+                    animationEngine.Rop0('blockSettings')
                 },
                 fSHome: async function() {
                     UI.header({
@@ -523,6 +508,7 @@
                         addHeart: true
                     })
                     animationEngine.RESTORE()
+                    await plutonny.sleep(100)
                     plutonny.output('blockGeneral', `
                         <div class="lineGeneral" id="lineGeneral"></div>
                         <div class="textGeneral" id="textGeneral"></div>
