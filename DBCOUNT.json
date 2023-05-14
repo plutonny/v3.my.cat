@@ -10,22 +10,32 @@
         "color": "blue"
     },
     "2": {
+        "type": "once",
+        "nameText": "приезд Макса с армии",
+        "processText": "до приезда Макса с армии",
+        "endText": "Макс приехал",
+        "date": "7-15",
+        "time": "8:00",
+        "icon": "military_tech",
+        "color": "green"
+    },
+    "3": {
         "type": "dayInYear",
         "nameText": "день рождения Макса",
         "processText": "до дня рождения Макса",
-        "endText": "с днем рождения, Макс!",
+        "endText": "с днем рождения, Макс",
         "date": "6-11",
         "icon": "celebration",
         "color": "red"
     },
-    "3": {
+    "4": {
         "type": "dayInYear",
         "nameText": "день рождения Вити",
         "processText": "до дня рождения Вити",
-        "endText": "с днем рождения, Витя!",
+        "endText": "с днем рождения, Витя",
         "date": "8-22",
         "icon": "emoji_nature",
         "color": "yellow"
     },
-    "count": 3
+    "count": 4
 }
