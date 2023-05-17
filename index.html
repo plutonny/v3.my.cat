@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=14.05.2023-v300-b19"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=14.05.2023-v300-b19" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=14.05.2023-v300-b19">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=14.05.2023-v300-b19">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=17.05.2023-v300-b20"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=17.05.2023-v300-b20" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=17.05.2023-v300-b20">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=17.05.2023-v300-b20">
         <style  id="theming"                        ></style>
         <style  id="animationEngine"                ></style>
 
@@ -67,9 +67,10 @@
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '19'
+            var siteBuild = '20'
 
             var DATESTATIC = new Date()
+            let DYNAMICTIME = new Date()
             var SEASON = ''
             let dec10 = new Date(DATESTATIC.getFullYear(), 11, 10), jan20 = new Date(DATESTATIC.getFullYear(), 0, 20, 23, 59, 59, 999), dec31 = new Date(DATESTATIC.getFullYear(), 11, 31, 23, 59, 59, 999), jan01 = new Date(DATESTATIC.getFullYear(), 0, 1)
             if ((dec10 <= DATESTATIC && DATESTATIC <= dec31) || (jan01 <= DATESTATIC && DATESTATIC <= jan20)) { SEASON = 'newyear' }
@@ -222,97 +223,93 @@
                 fastDay: function(START, END) {
                     return Math.floor(((END - START) / 1000 / 60 / 60 / 24))
                 },
-                general: async function(START, END, textPROCESS, textEND) {
-                    let DYNAMICTIME = new Date()
-                    let p = END - DYNAMICTIME
-                    if (p < 0) {
-                        //document.querySelector('.content').innerHTML = `<h1>${textEND}!</h1>`
-                    }
-                    else {
-                        //document.querySelector('#nameCounter').innerHTML = `${textPROCESS}:`
+                general: {
+                    percents: function(START, END, textPROCESS, textEND) {
+                        let p = END - DYNAMICTIME
+                        if (p > 0) {
+                            let r   = (END - DYNAMICTIME) / 1000
 
-                        // GENERAL COUNTER TIMER
-                        var general_timer = setInterval(function() {
-                            let DYNAMICTIME = new Date()
-                            let p   = END - DYNAMICTIME
-                            if (p > 0) {
-                                let r   = (END - DYNAMICTIME) / 1000
+                            let rd  = Math.floor(r / 60 / 60 / 24)
+                                r  -=            rd * 60 * 60 * 24
+                            let rh  = Math.floor(r / 60 / 60)
+                                r  -=            rh * 60 * 60
+                            let rm  = Math.floor(r / 60)
+                                r  -=            rm * 60
+                            let rs  = Math.floor(r)
 
-                                let rd  = Math.floor(r / 60 / 60 / 24)
-                                    r  -=            rd * 60 * 60 * 24
-                                let rh  = Math.floor(r / 60 / 60)
-                                    r  -=            rh * 60 * 60
-                                let rm  = Math.floor(r / 60)
-                                    r  -=            rm * 60
-                                let rs  = Math.floor(r)
-                                    r  -=            rs
-                                let rc  = Math.floor(r * 1000)
+                            document.querySelector('#textGeneral').innerHTML = `
+                            <p class="bold" style="font-size: 20px; margin: 14px 0 8px 6px;">${textPROCESS}:</p>
+                            <p style="margin: 18px 0 0 0; font-size: 14px;">
+                                ${plutonny.UI.rus('day', rd)}, 
+                                ${plutonny.UI.rus('hour', rh)}, 
+                                ${plutonny.UI.rus('minute', rm)},
+                                ${plutonny.UI.rus('second', rs)}
+                            </p>`
 
-                                //document.querySelector('#textGeneral').innerHTML = `
-                                //    ${plutonny.UI.rus('day', rd)}, 
-                                //    ${plutonny.UI.rus('hour', rh)}, 
-                                //    ${plutonny.UI.rus('minute', rm)},
-                                //    ${plutonny.UI.rus('second', rs)}, 
-                                //    ${plutonny.UI.rus('milisecond', rc)}
-                                //`
-                            } else COUNT.general(START, END, textPROCESS, textEND)
-                        }, 10)
+                            let pd100 = (START - DYNAMICTIME) / (START - END) * 100
+                            let pm100 = parseFloat(parseInt((pd100 * 1000) + 1)) / 1000
 
-                        var general_timer2 = setInterval(function() {
-                            let DYNAMICTIME = new Date()
-                            let r   = END - DYNAMICTIME
-                            if (r > 0) {
-                                let percents = (START - DYNAMICTIME) / (START - END) * 100
-                                let p        = parseFloat(parseInt((percents * 1000) + 1)) / 1000
+                            document.querySelector('#counterGenPer').innerHTML = `${pm100} %`
+                            document.querySelector('#counterGenLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * pm100}px`
+                        }
+                    },
+                    week: function(START, END, textPROCESS, textEND) {
+                        let p = END - DYNAMICTIME
+                        if (p > 0) {
+                            let r   = (END - DYNAMICTIME) / 1000
 
-                                document.querySelector('#counterGenPer').innerHTML = `${p} %`
-                                document.querySelector('#counterGenLine').innerHTML = `<style>#counterGenLine { width: ${((document.body.clientWidth - 36 - 48) / 100) * p}px !important; }</style>`
-                            }
-                        }, 1000)
+                            let cmn = new Date(DYNAMICTIME.getFullYear(), DYNAMICTIME.getMonth() + 1, END.getDate(), END.getHours(), END.getMinutes(), END.getSeconds())
+                            let smn = new Date(DYNAMICTIME.getFullYear(), DYNAMICTIME.getMonth(), END.getDate(), END.getHours(), END.getMinutes(), END.getSeconds())
+                            let rmm = (cmn - DYNAMICTIME) / (cmn - smn)
 
-                        // ADDITIONAL COUNTER TIMER
-                        var additional_timer = setInterval(function(){
-                            let DYNAMICTIME = new Date()
-                            let p   = END - DYNAMICTIME
+                            let rw  = Math.floor((r / 60 / 60 / 24 / 7) * 100) / 100
+                            document.querySelector('#weekPer').innerHTML = plutonny.UI.rus('week', rw)
+                            document.querySelector('#weekLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rmm % 1)*100)}px`
+                            document.querySelector('#dayLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rw % 1)*100)}px`
+                        }
+                    },
+                    day: function(START, END, textPROCESS, textEND) {
+                        let p = END - DYNAMICTIME
+                        if (p > 0) {
+                            let r   = (END - DYNAMICTIME) / 1000
 
-                            if (p > 0) {
-                                let r   = (END - DYNAMICTIME) / 1000
+                            let rd  = Math.floor((r / 60 / 60 / 24) * 100) / 100
+                            document.querySelector('#dayPer').innerHTML = plutonny.UI.rus('day', rd)
+                            document.querySelector('#hourLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rd % 1)*100)}px`
+                        }
 
-                                let cmn = new Date(DYNAMICTIME.getFullYear(), DYNAMICTIME.getMonth() + 1, END.getDate(), END.getHours(), END.getMinutes(), END.getSeconds())
-                                let smn = new Date(DYNAMICTIME.getFullYear(), DYNAMICTIME.getMonth(), END.getDate(), END.getHours(), END.getMinutes(), END.getSeconds())
-                                let rmm = (cmn - DYNAMICTIME) / (cmn - smn)
+                    },
+                    hour: function(START, END, textPROCESS, textEND) {
+                        let p = END - DYNAMICTIME
+                        if (p > 0) {
+                            let r   = (END - DYNAMICTIME) / 1000
 
-                                let rw  = Math.floor((r / 60 / 60 / 24 / 7) * 100) / 100
-                                document.querySelector('#weekPer').innerHTML = plutonny.UI.rus('week', rw)
-                                let rd  = Math.floor((r / 60 / 60 / 24) * 100) / 100
-                                document.querySelector('#dayPer').innerHTML = plutonny.UI.rus('day', rd)
-                                let rh  = Math.floor((r / 60 / 60) * 100) / 100
-                                document.querySelector('#hourPer').innerHTML = plutonny.UI.rus('hour', rh)
-                                let rm  = Math.floor((r / 60) * 100) / 100
-                                document.querySelector('#minutePer').innerHTML = plutonny.UI.rus('minute', rm)
-                                
-                                //document.querySelector('#AddiCouG').innerHTML = `
-                                //#weekLine { width: ${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rmm % 1)*100)}px !important; }
-                                //#dayLine { width: ${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rw % 1)*100)}px !important; }
-                                //#hourLine { width: ${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rd % 1)*100)}px !important; }
-                                //#minuteLine { width: ${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rh % 1)*100)}px !important; }
-                                //`
-                            }
-                        }, 1000)
+                            let rh  = Math.floor((r / 60 / 60) * 100) / 100
+                            document.querySelector('#hourPer').innerHTML = plutonny.UI.rus('hour', rh)
+                            document.querySelector('#minuteLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rh % 1)*100)}px`
+                        }
 
-                        var additional_timer2 = setInterval(function(){
-                            let DYNAMICTIME = new Date()
-                            let p   = END - DYNAMICTIME
-                            if (p > 0) {
-                                let r   = (END - DYNAMICTIME) / 1000
+                    },
+                    minute: function(START, END, textPROCESS, textEND) {
+                        let p = END - DYNAMICTIME
+                        if (p > 0) {
+                            let r   = (END - DYNAMICTIME) / 1000
 
-                                let rm = r / 60
-                                let rs  = Math.floor((r) * 100) / 100
-                                document.querySelector('#secondPer').innerHTML = plutonny.UI.rus('second', rs)
-                                
-                                //document.querySelector('#AddiCouA').innerHTML = `#secondLine { width: ${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rm % 1)*100)}px !important; }`
-                            }
-                        }, 10)
+                            let rm  = Math.floor((r / 60) * 100) / 100
+                            document.querySelector('#minutePer').innerHTML = plutonny.UI.rus('minute', rm)
+                            document.querySelector('#secondLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rm % 1)*100)}px`
+                        }
+
+                    },
+                    second: function(START, END, textPROCESS, textEND) {
+                        let p = END - DYNAMICTIME
+                        if (p > 0) {
+                            let r   = (END - DYNAMICTIME) / 1000
+
+                            let rs  = Math.floor((r) * 10) / 10
+                            document.querySelector('#secondPer').innerHTML = plutonny.UI.rus('second', rs)
+                        }
+
                     }
                 }
             }
@@ -420,6 +417,7 @@
                         document.getElementById('animationEngine').innerHTML = `.blockGeneral { min-height: 0 !important; }`
                     }
                     if (tag == 'home>counter') {
+                        document.querySelector('#textGeneral').style.opacity = 0
                         document.getElementById('animationEngine').innerHTML += `
                         .contentOt { opacity: 0; }
                         .yearLine, .textGeneral { opacity: 0; }`
@@ -462,6 +460,13 @@
 
         <!-- PAGE CREATOR -->
         <script type="text/javascript">
+            var ND = null
+            var GP = null
+            var AW = null
+            var AD = null
+            var AH = null
+            var AM = null
+            var AS = null
             var pageCreator = {
                 firstLoad: async function() {
                     animationEngine.op0('homeAll')
@@ -488,9 +493,10 @@
                         for (let i in dbc) dbd.push(dbc[i][1])
                         let fastestEvent = dbc[dbd.indexOf(Math.min(...dbd))][0]
                         plutonny.output('textGeneral', `
-                        <p style="font-size: 20px; margin: 14px 0 8px 0;">ближайшее событие:</p>
+                        <p class="bold" style="font-size: 20px; margin: 14px 0 8px 0;">ближайшее событие:</p>
                         ${UI.event('small', counters[fastestEvent])}
                         `)
+                        document.querySelector('#textGeneral').style.opacity = 1
                         let injEvent = ''
                         for (let i = 1; i <= counters.count; i++) injEvent += UI.event('large', counters[i], i)
                         plutonny.output('contentOt', `
@@ -519,9 +525,10 @@
                     <div id="counterGenLine" class="counterGenLine" style="background: var(--line-${SEASON}); border-radius: 100px; height: 100%; width: 0px;"></div>
                     <p id="counterGenPer" class="counterGenPer bold" style="position: absolute; font-size: 28px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
                     `)
-                    animationEngine.height('blockAdd', '184px !important')
+                    animationEngine.height('blockAdd', '225px !important')
                     plutonny.output('blockAdd', `
                     <style>.blockAdd { padding: 18px; }</style>
+                    <p class="bold" style="margin: 0 0 12px 6px; font-size: 24px;">или:</p>
                     <div class="weekBlock" style="opacity: 0; height: 24px; width: 100%; border-radius: 100px; overflow: hidden; display: flex !important; align-items: center; background: var(--line-general-color);">
                         <div id="weekLine" class="weekLine" style="width: 0px; height: 24px; border-radius: 100px; background: var(--line-${SEASON});"></div>
                         <p id="weekPer" class="weekPer" style="position: absolute; font-size: 18px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
@@ -548,7 +555,6 @@
                     </div>
                     `)
                     animationEngine.Rop0('counterAddAll')
-                    await plutonny.sleep(400)
                     animationEngine.width('counterGenPer', 'calc(100vw - 36px - 48px) !important')
                     animationEngine.width('weekPer', 'calc(100vw - 36px - 48px) !important')
                     animationEngine.width('dayPer', 'calc(100vw - 36px - 48px) !important')
@@ -557,7 +563,41 @@
                     animationEngine.width('secondPer', 'calc(100vw - 36px - 48px) !important')
                     fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(async function (counters) {
                         let [d1, d2] = UX.datePrepare(UX.dateThisYear(counters[id].date, counters[id].time))
-                        COUNT.general(d1, d2, counters[id].processText, counters[id].endText)
+                        DYNAMICTIME = new Date()
+                        COUNT.general.percents(d1, d2, counters[id].processText, counters[id].endText)
+                        document.querySelector('#textGeneral').style.opacity = 1
+                        await plutonny.sleep(400)
+                        COUNT.general.week(d1, d2, counters[id].processText, counters[id].endText)
+                        await plutonny.sleep(50)
+                        COUNT.general.day(d1, d2, counters[id].processText, counters[id].endText)
+                        await plutonny.sleep(50)
+                        COUNT.general.hour(d1, d2, counters[id].processText, counters[id].endText)
+                        await plutonny.sleep(50)
+                        COUNT.general.minute(d1, d2, counters[id].processText, counters[id].endText)
+                        await plutonny.sleep(50)
+                        COUNT.general.second(d1, d2, counters[id].processText, counters[id].endText)
+
+                        ND = setInterval(function() { 
+                            DYNAMICTIME = new Date()
+                        }, 100)
+                        GP = setInterval(function() { 
+                            COUNT.general.percents(d1, d2, counters[id].processText, counters[id].endText)
+                        }, 100)
+                        AW = setInterval(function() { 
+                            COUNT.general.week(d1, d2, counters[id].processText, counters[id].endText)
+                        }, 1000)
+                        AD = setInterval(function() { 
+                            COUNT.general.day(d1, d2, counters[id].processText, counters[id].endText)
+                        }, 1000)
+                        AH = setInterval(function() { 
+                            COUNT.general.hour(d1, d2, counters[id].processText, counters[id].endText)
+                        }, 1000)
+                        AM = setInterval(function() { 
+                            COUNT.general.minute(d1, d2, counters[id].processText, counters[id].endText)
+                        }, 300)
+                        AS = setInterval(function() { 
+                            COUNT.general.second(d1, d2, counters[id].processText, counters[id].endText)
+                        }, 50)
                     }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(counter) -> JSON (DBCOUNT)', err) })
                 },
                 settings: async function() {
@@ -598,12 +638,30 @@
                         buttonBack: 'none',
                         addHeart: true
                     })
+                    clearInterval(GP)
+                    clearInterval(AW)
+                    clearInterval(AD)
+                    clearInterval(AH)
+                    clearInterval(AM)
+                    clearInterval(AS)
+                    document.querySelector('#textGeneral').style.opacity = 0
                     animationEngine.op0('counterAddAll')
+                    animationEngine.op0('counterGenPer')
+                    animationEngine.width('counterGenLine', '0px !important')
+                    await plutonny.sleep(30)
+                    animationEngine.width('weekLine', '0px !important')
+                    await plutonny.sleep(30)
+                    animationEngine.width('dayLine', '0px !important')
+                    await plutonny.sleep(30)
+                    animationEngine.width('hourLine', '0px !important')
+                    await plutonny.sleep(30)
+                    animationEngine.width('minuteLine', '0px !important')
+                    await plutonny.sleep(30)
+                    animationEngine.width('secondLine', '0px !important')
+                    await plutonny.sleep(100)
+                    animationEngine.op0('blockAdd')
+                    await plutonny.sleep(100)
                     animationEngine.height('blockAdd', '0px !important')
-                    clearInterval(general_timer)
-                    clearInterval(general_timer2)
-                    clearInterval(additional_timer)
-                    clearInterval(additional_timer2)
                     await plutonny.sleep(100)
                     plutonny.output('blockAdd', ``)
                     animationEngine.RESTORE()
