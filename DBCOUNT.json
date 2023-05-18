@@ -37,5 +37,14 @@
         "icon": "emoji_nature",
         "color": "yellow"
     },
-    "count": 4
+    "5": {
+        "type": "dayInYear",
+        "nameText": "dayInYear",
+        "processText": "testpr",
+        "endText": "testEnd",
+        "date": "5-19",
+        "icon": "update",
+        "color": "yellow"
+    },
+    "count": 5
 }

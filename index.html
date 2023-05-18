@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=17.05.2023-v300-b20"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=17.05.2023-v300-b20" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=17.05.2023-v300-b20">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=17.05.2023-v300-b20">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=18.05.2023-v300-b21"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=18.05.2023-v300-b21" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=18.05.2023-v300-b21">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=18.05.2023-v300-b21">
         <style  id="theming"                        ></style>
         <style  id="animationEngine"                ></style>
 
@@ -67,7 +67,7 @@
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '20'
+            var siteBuild = '21'
 
             var DATESTATIC = new Date()
             let DYNAMICTIME = new Date()
@@ -164,7 +164,7 @@
                                 <div style="width: 16px;"></div>
                                 <p style="font-size: 16px; margin: 0;">${event.nameText}</p>
                                 <div style="margin-right: auto;"></div>
-                                <p style="font-size: 24px; margin: 0 0 0 8px;">${COUNT.fastPer(d1, d2)}</p>
+                                <p style="font-size: 24px; margin: 0 0 0 8px;">${COUNT.fastPer(d1, d2, event.type)}</p>
                                 </div>`
                     }
                     
@@ -216,7 +216,12 @@
         <!-- counters -->
         <script type="text/javascript">
             var COUNT = {
-                fastPer: function(START, END) {
+                fastPer: function(START, END, typeEvent) {
+                    if (typeEvent == 'dayInYear' || typeEvent == 'timeInYear') {
+                        if ((DYNAMICTIME.getMonth() == START.getMonth()) && (DYNAMICTIME.getDate() == START.getDate())) {
+                            return '100&nbsp;%'
+                        }
+                    }
                     let p = (START - DATESTATIC) / (START - END) * 100
                     return `${(parseFloat(parseInt(p * 10)) % 10) > 7 ? parseInt(p + 1) : parseInt(p)}&nbsp;%`
                 },
@@ -224,7 +229,7 @@
                     return Math.floor(((END - START) / 1000 / 60 / 60 / 24))
                 },
                 general: {
-                    percents: function(START, END, textPROCESS, textEND) {
+                    percents: function(START, END, textPROCESS) {
                         let p = END - DYNAMICTIME
                         if (p > 0) {
                             let r   = (END - DYNAMICTIME) / 1000
@@ -253,7 +258,7 @@
                             document.querySelector('#counterGenLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * pm100}px`
                         }
                     },
-                    week: function(START, END, textPROCESS, textEND) {
+                    week: function(END) {
                         let p = END - DYNAMICTIME
                         if (p > 0) {
                             let r   = (END - DYNAMICTIME) / 1000
@@ -268,7 +273,7 @@
                             document.querySelector('#dayLine').style.width = `${((document.body.clientWidth - 36 - 48) / 100) * Math.floor((rw % 1)*100)}px`
                         }
                     },
-                    day: function(START, END, textPROCESS, textEND) {
+                    day: function(END) {
                         let p = END - DYNAMICTIME
                         if (p > 0) {
                             let r   = (END - DYNAMICTIME) / 1000
@@ -279,7 +284,7 @@
                         }
 
                     },
-                    hour: function(START, END, textPROCESS, textEND) {
+                    hour: function(END) {
                         let p = END - DYNAMICTIME
                         if (p > 0) {
                             let r   = (END - DYNAMICTIME) / 1000
@@ -290,7 +295,7 @@
                         }
 
                     },
-                    minute: function(START, END, textPROCESS, textEND) {
+                    minute: function(END) {
                         let p = END - DYNAMICTIME
                         if (p > 0) {
                             let r   = (END - DYNAMICTIME) / 1000
@@ -301,7 +306,7 @@
                         }
 
                     },
-                    second: function(START, END, textPROCESS, textEND) {
+                    second: function(END) {
                         let p = END - DYNAMICTIME
                         if (p > 0) {
                             let r   = (END - DYNAMICTIME) / 1000
@@ -562,50 +567,94 @@
                     animationEngine.width('minutePer', 'calc(100vw - 36px - 48px) !important')
                     animationEngine.width('secondPer', 'calc(100vw - 36px - 48px) !important')
                     fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(async function (counters) {
-                        let [d1, d2] = UX.datePrepare(UX.dateThisYear(counters[id].date, counters[id].time))
-                        DYNAMICTIME = new Date()
-                        COUNT.general.percents(d1, d2, counters[id].processText, counters[id].endText)
-                        document.querySelector('#textGeneral').style.opacity = 1
-                        await plutonny.sleep(400)
-                        COUNT.general.week(d1, d2, counters[id].processText, counters[id].endText)
-                        await plutonny.sleep(50)
-                        COUNT.general.day(d1, d2, counters[id].processText, counters[id].endText)
-                        await plutonny.sleep(50)
-                        COUNT.general.hour(d1, d2, counters[id].processText, counters[id].endText)
-                        await plutonny.sleep(50)
-                        COUNT.general.minute(d1, d2, counters[id].processText, counters[id].endText)
-                        await plutonny.sleep(50)
-                        COUNT.general.second(d1, d2, counters[id].processText, counters[id].endText)
-
-                        ND = setInterval(function() { 
+                        if (counters[id].type == 'dayInYear') {
                             DYNAMICTIME = new Date()
-                        }, 100)
-                        GP = setInterval(function() { 
-                            COUNT.general.percents(d1, d2, counters[id].processText, counters[id].endText)
-                        }, 100)
-                        AW = setInterval(function() { 
-                            COUNT.general.week(d1, d2, counters[id].processText, counters[id].endText)
-                        }, 1000)
-                        AD = setInterval(function() { 
-                            COUNT.general.day(d1, d2, counters[id].processText, counters[id].endText)
-                        }, 1000)
-                        AH = setInterval(function() { 
-                            COUNT.general.hour(d1, d2, counters[id].processText, counters[id].endText)
-                        }, 1000)
-                        AM = setInterval(function() { 
-                            COUNT.general.minute(d1, d2, counters[id].processText, counters[id].endText)
-                        }, 300)
-                        AS = setInterval(function() { 
-                            COUNT.general.second(d1, d2, counters[id].processText, counters[id].endText)
-                        }, 50)
+                            let [d1, d2] = UX.datePrepare(UX.dateThisYear(counters[id].date, counters[id].time))
+                            if ((DYNAMICTIME.getMonth() == d1.getMonth()) && (DYNAMICTIME.getDate() == d1.getDate())) {
+                                document.querySelector('#counterGenLine').style.width = '100%'
+                                document.querySelector('#counterGenPer').innerHTML = '100 %'
+                                animationEngine.op0('blockAdd')
+                                await plutonny.sleep(200)
+                                animationEngine.height('blockGeneral', '253px !important')
+                                animationEngine.height('blockAdd', '0px !important')
+                                await plutonny.sleep(100)
+                                document.querySelector('#textGeneral').style.opacity = 0
+                                await plutonny.sleep(400)
+                                plutonny.output('textGeneral', `
+                                <div style="display: flex; align-items: center; flex-direction: column;">
+                                    <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
+                                    <p class="bold" style="margin: 0; font-size: 24px;">${counters[id].endText}</p>
+                                </div>
+                                `)
+                                document.querySelector('#textGeneral').style.opacity = 1
+                                return
+                            }
+                            COUNT.general.percents(d1, d2, counters[id].processText)
+                            document.querySelector('#textGeneral').style.opacity = 1
+                            await plutonny.sleep(400)
+                            COUNT.general.week(d2); await plutonny.sleep(50)
+                            COUNT.general.day(d2); await plutonny.sleep(50)
+                            COUNT.general.hour(d2); await plutonny.sleep(50)
+                            COUNT.general.minute(d2); await plutonny.sleep(50)
+                            COUNT.general.second(d2)
+
+                            ND = setInterval(function() { DYNAMICTIME = new Date() }, 100)
+                            GP = setInterval(function() { COUNT.general.percents(d1, d2, counters[id].processText) }, 100)
+                            AW = setInterval(function() { COUNT.general.week(d2) }, 1000)
+                            AD = setInterval(function() { COUNT.general.day(d2) }, 1000)
+                            AH = setInterval(function() { COUNT.general.hour(d2) }, 1000)
+                            AM = setInterval(function() { COUNT.general.minute(d2) }, 300)
+                            AS = setInterval(function() { COUNT.general.second(d2) }, 50)
+                        }
+                        if (counters[id].type == 'timeInYear') {
+                            DYNAMICTIME = new Date()
+                            let [d1, d2] = UX.datePrepare(UX.dateThisYear(counters[id].date, counters[id].time))
+                            let d3 = UX.dateThisYear(counters[id].date, counters[id].time)
+                            if ((DYNAMICTIME.getMonth() == d1.getMonth()) && (DYNAMICTIME.getDate() == d1.getDate()) && DATESTATIC >= d3) {
+                                document.querySelector('#counterGenLine').style.width = '100%'
+                                document.querySelector('#counterGenPer').innerHTML = '100 %'
+                                animationEngine.op0('blockAdd')
+                                await plutonny.sleep(200)
+                                animationEngine.height('blockGeneral', '253px !important')
+                                animationEngine.height('blockAdd', '0px !important')
+                                await plutonny.sleep(100)
+                                document.querySelector('#textGeneral').style.opacity = 0
+                                await plutonny.sleep(400)
+                                plutonny.output('textGeneral', `
+                                <div style="display: flex; align-items: center; flex-direction: column;">
+                                    <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
+                                    <p class="bold" style="margin: 0; font-size: 24px;">${counters[id].endText}</p>
+                                </div>
+                                `)
+                                document.querySelector('#textGeneral').style.opacity = 1
+                                return
+                            }
+                            COUNT.general.percents(d1, d2, counters[id].processText)
+                            document.querySelector('#textGeneral').style.opacity = 1
+                            await plutonny.sleep(400)
+                            COUNT.general.week(d2); await plutonny.sleep(50)
+                            COUNT.general.day(d2); await plutonny.sleep(50)
+                            COUNT.general.hour(d2); await plutonny.sleep(50)
+                            COUNT.general.minute(d2); await plutonny.sleep(50)
+                            COUNT.general.second(d2)
+
+                            ND = setInterval(function() { DYNAMICTIME = new Date() }, 100)
+                            GP = setInterval(function() { COUNT.general.percents(d1, d2, counters[id].processText) }, 100)
+                            AW = setInterval(function() { COUNT.general.week(d2) }, 1000)
+                            AD = setInterval(function() { COUNT.general.day(d2) }, 1000)
+                            AH = setInterval(function() { COUNT.general.hour(d2) }, 1000)
+                            AM = setInterval(function() { COUNT.general.minute(d2) }, 300)
+                            AS = setInterval(function() { COUNT.general.second(d2) }, 50)
+                        }
                     }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(counter) -> JSON (DBCOUNT)', err) })
                 },
                 settings: async function() {
                     UI.header({
-                        textCenter: 'настройки',
+                        textCenter: `v${siteVersion}(${siteBuild})`,
                         buttonBack: `pageCreator.fSHome()`,
                         addHeart: false
                     })
+                    document.querySelector('#textGeneral').style.opacity = 0
                     await animationEngine.transfer('home>settings')
                     plutonny.output('blockGeneral', `
                     <div class="blockSettings" style="opacity: 0;">
@@ -638,6 +687,7 @@
                         buttonBack: 'none',
                         addHeart: true
                     })
+                    clearInterval(ND)
                     clearInterval(GP)
                     clearInterval(AW)
                     clearInterval(AD)
