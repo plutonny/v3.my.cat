@@ -14,8 +14,10 @@
         "nameText": "приезд Макса с армии",
         "processText": "до приезда Макса",
         "endText": "Макс приехал",
-        "date": "7-15",
-        "time": "8:00",
+        "Sdate": "2022-7-13",
+        "Stime": "15:00",
+        "Edate": "2023-7-15",
+        "Etime": "8:00",
         "icon": "military_tech",
         "color": "green"
     },
@@ -37,14 +39,5 @@
         "icon": "emoji_nature",
         "color": "yellow"
     },
-    "5": {
-        "type": "dayInYear",
-        "nameText": "dayInYear",
-        "processText": "testpr",
-        "endText": "testEnd",
-        "date": "5-19",
-        "icon": "update",
-        "color": "yellow"
-    },
-    "count": 5
+    "count": 4
 }
