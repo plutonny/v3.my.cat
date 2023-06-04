@@ -50,8 +50,8 @@
 ::-webkit-scrollbar { width: 0px; height: 0px; }
 
 /* styles for all pages */
-html, body { margin: 0; overflow-x: hidden; transition: 400ms all; transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-h1, h2, h3, h4, h5, h6, p, a, b, td, div, li, button, br, input, label { z-index: 2; transition: 400ms all; transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); font-family: 'Montserrat'; word-wrap: break-word; letter-spacing: 0.05em; }
+html, body { margin: 0; overflow-x: hidden; transition: 400ms all; transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
+h1, h2, h3, h4, h5, h6, p, a, b, td, div, li, button, br, input, label { z-index: 2; transition: 400ms all; transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); font-family: 'Montserrat'; word-break: keep-all; letter-spacing: 0.05em; }
 /* colors */
 html, body { background: var(--bg-color); }
 h1, h2, h3, h4, h5, h6, p, a, b, td, div, li, button, br, input, label, small { color: var(--text-color); }
