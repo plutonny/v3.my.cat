@@ -11,14 +11,14 @@
     },
     "2": {
         "type": "once",
-        "nameText": "приезд Макса с армии",
+        "nameText": "приезд Макса с отпуска",
         "processText": "до приезда Макса",
         "endText": "Макс приехал",
-        "Sdate": "2022-7-13",
-        "Stime": "15:00",
-        "Edate": "2023-7-15",
-        "Etime": "8:00",
-        "icon": "military_tech",
+        "Sdate": "2023-7-21",
+        "Stime": "23:58",
+        "Edate": "2023-8-12",
+        "Etime": "23:59",
+        "icon": "beach_access",
         "color": "green"
     },
     "3": {

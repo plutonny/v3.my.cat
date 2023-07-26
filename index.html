@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=04.06.2023-v300-b23"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=04.06.2023-v300-b23" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=04.06.2023-v300-b23">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=04.06.2023-v300-b23">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=26.07.2023-v300-b24"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=26.07.2023-v300-b24" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=26.07.2023-v300-b24">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=26.07.2023-v300-b24">
         <style  id="theming"                        ></style>
         <style  id="animationEngine"                ></style>
 
@@ -67,7 +67,7 @@
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '23'
+            var siteBuild = '24'
 
             var DATESTATIC = new Date()
             let DYNAMICTIME = new Date()
@@ -163,7 +163,7 @@
                             } else {
                                 [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
                             }
-                            return `<div onclick="pageCreator.counter(${id})" class="conHA" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); border-radius: 24px; margin-bottom: 16px; padding: 18px;">
+                            return `<div onclick="pageCreator.counter(${id})" class="conHA">
                                 <div style="height: 42px; width: 42px;">
                                     ${plutonny.UI.gIcon({
                                         size: 42,
@@ -446,7 +446,7 @@
                         await plutonny.sleep(400)
                         document.getElementById('animationEngine').innerHTML = `.yearLine, .contentOt, .textGeneral { opacity: 1; }`
                     } else if (tag == 'counterAddAll') {
-                        document.getElementById('animationEngine').innerHTML += `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { display: inherit !important; }`
+                        document.getElementById('animationEngine').innerHTML += `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { display: inherit; }`
                         await plutonny.sleep(400)
                         document.getElementById('animationEngine').innerHTML += `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { opacity: 1 !important; }`
                     } else
@@ -498,7 +498,7 @@
                         </div>
                     </div>
                     `)
-                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(async function (counters) {
+                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then((response) => { return response.json() }).then(async function (counters) {
                         let dbc = [], dbd = []
                         for (let i = 1; i <= counters.count; i++) {
                             let cd
@@ -523,17 +523,17 @@
                             else injEvent += UI.event('large', counters[i], i)
                         }
                         plutonny.output('contentOt', `
-                        <p class="bold" style="font-size: 32px; margin: 0; padding-left: 6px;">все события:</p>
+                        <p class="bold" style="font-size: 32px; margin: 0; padding-left: 18px;">все события:</p>
                         <div style="height: 24px;"></div>
                         ${injEvent}
-                        <div class="conHA" onclick="pageCreator.settings()" style="background: var(--con-color); height: 32px; border-radius: 100px; margin-top: 16px; display: flex; justify-content: center; align-items: center;">
-                            <p style="margin: 0;">настройки</p>
+                        <div class="buttonHome" onclick="pageCreator.settings()" style="background: var(--con-color); height: 32px !important; border-radius: 100px; margin-top: 16px; display: flex; justify-content: center; align-items: center;">
+                            <p style="margin: 0;">данные</p>
                         </div>
                         `)
                         await plutonny.sleep(400)
                         animationEngine.Rop0('homeAll')
                         animationEngine.Rop0('lineGeneral')
-                    }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(firstLoad) -> JSON (DBCOUNT)', err) })
+                    }).catch(function (err) { plutonny.console.error('index.html -> pageCreator(firstLoad) -> JSON (DBCOUNT)', err); pageCreator.settings() })
                 },
                 counter: async function(id) {
                     UI.header({
@@ -552,29 +552,29 @@
                     plutonny.output('blockAdd', `
                     <style>.blockAdd { padding: 18px; }</style>
                     <p class="bold" style="margin: 0 0 12px 6px; font-size: 24px;">или:</p>
-                    <div class="weekBlock" style="opacity: 0; height: 24px; width: 100%; border-radius: 100px; overflow: hidden; display: flex !important; align-items: center; background: var(--line-general-color);">
-                        <div id="weekLine" class="weekLine" style="width: 0px; height: 24px; border-radius: 100px; background: var(--line-${SEASON});"></div>
-                        <p id="weekPer" class="weekPer" style="position: absolute; font-size: 18px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
+                    <div class="weekBlock">
+                        <div id="weekLine" class="weekLine" style="background: var(--line-${SEASON});"></div>
+                        <p id="weekPer" class="weekPer"></p>
                     </div>
                     <div style="height: 16px;"></div>
-                    <div class="dayBlock" style="opacity: 0; height: 24px; width: 100%; border-radius: 100px; overflow: hidden; display: flex !important; align-items: center; background: var(--line-general-color);">
-                        <div id="dayLine" class="dayLine" style="width: 0px; height: 24px; border-radius: 100px; background: var(--line-${SEASON});"></div>
-                        <p id="dayPer" class="dayPer" style="position: absolute; font-size: 18px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
+                    <div class="dayBlock">
+                        <div id="dayLine" class="dayLine" style="background: var(--line-${SEASON});"></div>
+                        <p id="dayPer" class="dayPer"></p>
                     </div>
                     <div style="height: 16px;"></div>
-                    <div class="hourBlock" style="opacity: 0; height: 24px; width: 100%; border-radius: 100px; overflow: hidden; display: flex !important; align-items: center; background: var(--line-general-color);">
-                        <div id="hourLine" class="hourLine" style="width: 0px; height: 24px; border-radius: 100px; background: var(--line-${SEASON});"></div>
-                        <p id="hourPer" class="hourPer" style="position: absolute; font-size: 18px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
+                    <div class="hourBlock">
+                        <div id="hourLine" class="hourLine" style="background: var(--line-${SEASON});"></div>
+                        <p id="hourPer" class="hourPer"></p>
                     </div>
                     <div style="height: 16px;"></div>
-                    <div class="minuteBlock" style="opacity: 0; height: 24px; width: 100%; border-radius: 100px; overflow: hidden; display: flex !important; align-items: center; background: var(--line-general-color);">
-                        <div id="minuteLine" class="minuteLine" style="width: 0px; height: 24px; border-radius: 100px; background: var(--line-${SEASON});"></div>
-                        <p id="minutePer" class="minutePer" style="position: absolute; font-size: 18px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
+                    <div class="minuteBlock">
+                        <div id="minuteLine" class="minuteLine" style="background: var(--line-${SEASON});"></div>
+                        <p id="minutePer" class="minutePer"></p>
                     </div>
                     <div style="height: 16px;"></div>
-                    <div class="secondBlock" style="opacity: 0; height: 24px; width: 100%; border-radius: 100px; overflow: hidden; display: flex !important; align-items: center; background: var(--line-general-color);">
-                        <div id="secondLine" class="secondLine" style="width: 0px; height: 24px; border-radius: 100px; background: var(--line-${SEASON});"></div>
-                        <p id="secondPer" class="secondPer" style="position: absolute; font-size: 18px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
+                    <div class="secondBlock">
+                        <div id="secondLine" class="secondLine" style="background: var(--line-${SEASON});"></div>
+                        <p id="secondPer" class="secondPer"></p>
                     </div>
                     `)
                     animationEngine.Rop0('counterAddAll')
@@ -593,7 +593,7 @@
                         animationEngine.width('minutePer', 'calc(100vw - 36px - 48px) !important')
                         animationEngine.width('secondPer', 'calc(100vw - 36px - 48px) !important')
                     }
-                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then(function (response) { return response.json() }).then(async function (counters) {
+                    fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then((response) => { return response.json() }).then(async function (counters) {
                         if (counters[id].type == 'dayInYear') {
                             DYNAMICTIME = new Date()
                             let [d1, d2] = UX.datePrepare(UX.dateThisYear(counters[id].date, counters[id].time))
