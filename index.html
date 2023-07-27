@@ -55,19 +55,23 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=26.07.2023-v300-b24"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=26.07.2023-v300-b24" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=26.07.2023-v300-b24">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=26.07.2023-v300-b24">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=27.07.2023-v30-b25"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=27.07.2023-v30-b25" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=27.07.2023-v30-b25">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=27.07.2023-v30-b25">
         <style  id="theming"                        ></style>
         <style  id="animationEngine"                ></style>
+        
+        <script type="text/javascript">
+            if (window.location.href.split('?')[1] == 'debug') plutonny.get.eruda()
+        </script>
 
         <!-- GLOBAL VARIABLES -->
         <script type="text/javascript">
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '24'
+            var siteBuild = '25'
 
             var DATESTATIC = new Date()
             let DYNAMICTIME = new Date()
@@ -100,7 +104,7 @@
                     return cdd
                 },
                 theme: function() {
-                    plutonny.output('theming', `
+                    plutonny.output('id', 'theming', `
                     .page { 
                         background-attachment: fixed !important;
                         background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(87.62% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), #000000;
@@ -112,7 +116,7 @@
                     try {
                         await plutonny.sleep(200)
                         document.getElementById('theme-color').content = '#101010'
-                        plutonny.output('modal', `
+                        plutonny.output('id', 'modal', `
                             <div class="max-modal">
                                 <style>
                                     div#modal { position: fixed; height: 100vh; width: 100vw; background-color :#40404040; display: flex; justify-content: center; align-items: center; z-index: 100; }
@@ -183,7 +187,7 @@
                 },
                 header: function(settings) {
                     try {
-                        plutonny.output(`header`, `
+                        plutonny.output('id', `header`, `
                             <div class="hdr">
                                 <style>
                                     #header {
@@ -254,16 +258,16 @@
                                 r  -=            rm * 60
                             let rs  = Math.floor(r)
 
-                            document.querySelector('#textGeneral').innerHTML = `
+                            plutonny.output('id', 'textGeneral', `
                             <p class="bold" style="font-size: 20px; margin: 14px 0 8px 0;">${textPROCESS}:</p>
                             <p style="margin: 18px 0 0 0; font-size: 14px;">
                                 ${plutonny.UI.rus('day', rd)},&nbsp;${plutonny.UI.rus('hour', rh)},&nbsp;${plutonny.UI.rus('minute', rm)},&nbsp;${plutonny.UI.rus('second', rs)}
-                            </p>`
+                            </p>`)
 
                             let pd100 = (START - DYNAMICTIME) / (START - END) * 100
                             let pm100 = parseFloat(parseInt((pd100 * 1000) + 1)) / 1000
 
-                            document.querySelector('#counterGenPer').innerHTML = `${pm100} %`
+                            plutonny.output('id', 'counterGenPer', `${pm100} %`)
                             document.querySelector('#counterGenLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * pm100}px`
                         }
                     },
@@ -332,11 +336,11 @@
         <!-- serviceWorker -->
         <script type="text/javascript">
             if ('serviceWorker' in navigator) { 
-                window.addEventListener('load', function() {
+                window.addEventListener('load', () => {
                     navigator.serviceWorker.register('/service-worker.js').then(
-                        function(registration) { console.log(`serviceWorker: registration with scope ${registration.scope}`) },
-                        function(e) { plutonny.console.error('index.html ->', `serviceWorker registration failed: ${e}`) }
-                    ).catch(function(e) { plutonny.console.error('index.html ->', `serviceWorker function (${e})`) })
+                        (registration) => { console.log(`serviceWorker: registration with scope ${registration.scope}`) },
+                        (e) => { plutonny.console.error('index.html ->', `serviceWorker registration failed: ${e}`) }
+                    ).catch((e) => { plutonny.console.error('index.html ->', `serviceWorker function (${e})`) })
                 })
             } else plutonny.console.warn('index.html ->', 'service worker is not supported')
         </script>
@@ -382,7 +386,7 @@
             function clearCache() {
                 caches.delete('v3-mycat-byPlutonny')
                 caches.delete('mycat-byPlutonny')
-                plutonny.output('CCB', 'успешно')
+                plutonny.output('id', 'CCB', 'успешно')
             }
             function cd() {
                 try {
@@ -397,7 +401,7 @@
                     sessionStorage.clear()
                 }
                 catch (e) { plutonny.console.error('index.html -> settings -> cd()', e) }
-                plutonny.output('content', `
+                plutonny.output('id', 'content', `
                 <h1 align="center">успешно</h1>
                 <p align="center">теперь перезагрузите страницу</p>
                 <div style="display: flex; justify-content: center; margin-top: 24px;">
@@ -422,52 +426,52 @@
             var animationEngine = {
                 transfer: async function(tag) {
                     if (tag == 'home>settings') {
-                        document.getElementById('animationEngine').innerHTML += `
+                        plutonny.output(`id add`, `animationEngine`, `
                         .contentOt { opacity: 0; }
-                        .lineGeneral, .textGeneral { opacity: 0; }`
+                        .lineGeneral, .textGeneral { opacity: 0; }`)
                         await plutonny.sleep(400)
-                        document.getElementById('contentOt').innerHTML = ``
-                        document.getElementById('blockGeneral').innerHTML = ``
-                        document.getElementById('animationEngine').innerHTML = `.blockGeneral { min-height: 0 !important; }`
+                        plutonny.output(`id`, `contentOt`, ``)
+                        plutonny.output(`id`, `blockGeneral`, ``)
+                        plutonny.output(`id`, `animationEngine`, `.blockGeneral { min-height: 0 !important; }`)
                     }
                     if (tag == 'home>counter') {
                         document.querySelector('#textGeneral').style.opacity = 0
-                        document.getElementById('animationEngine').innerHTML += `
+                        plutonny.output(`id add`, `animationEngine`, `
                         .contentOt { opacity: 0; }
-                        .yearLine, .textGeneral { opacity: 0; }`
+                        .yearLine, .textGeneral { opacity: 0; }`)
                         await plutonny.sleep(400)
-                        document.getElementById('contentOt').innerHTML = ``
-                        document.getElementById('textGeneral').innerHTML = ``
+                        plutonny.output(`id`, `contentOt`, ``)
+                        plutonny.output(`id`, `textGeneral`, ``)
                     }
                 },
                 Rop0: async function(tag) {
                     if (tag == 'homeAll') {
-                        document.getElementById('animationEngine').innerHTML += `.yearLine, .contentOt, .textGeneral { display: inherit !important; }`
+                        plutonny.output(`id add`, `animationEngine`, `.yearLine, .contentOt, .textGeneral { display: inherit !important; }`)
                         await plutonny.sleep(400)
-                        document.getElementById('animationEngine').innerHTML = `.yearLine, .contentOt, .textGeneral { opacity: 1; }`
+                        plutonny.output(`id`, `animationEngine`, `.yearLine, .contentOt, .textGeneral { opacity: 1; }`)
                     } else if (tag == 'counterAddAll') {
-                        document.getElementById('animationEngine').innerHTML += `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { display: inherit; }`
+                        plutonny.output(`id add`, `animationEngine`, `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { display: inherit; }`)
                         await plutonny.sleep(400)
-                        document.getElementById('animationEngine').innerHTML += `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { opacity: 1 !important; }`
+                        plutonny.output(`id add`, `animationEngine`, `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { opacity: 1 !important; }`)
                     } else
-                        document.getElementById('animationEngine').innerHTML += `.${tag} { opacity: 1 !important; }`
+                        plutonny.output(`id add`, `animationEngine`, `.${tag} { opacity: 1 !important; }`)
                 },
                 op0: async function(tag) {
                     if (tag == 'homeAll') {
-                        document.getElementById('animationEngine').innerHTML += `.yearLine, .contentOt, .textGeneral { opacity: 0 !important; display: none; }`
+                        plutonny.output(`id add`, `animationEngine`, `.yearLine, .contentOt, .textGeneral { opacity: 0 !important; display: none; }`)
                     } else if (tag == 'counterAddAll') {
-                        document.getElementById('animationEngine').innerHTML += `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { opacity: 0 !important; }`
+                        plutonny.output(`id add`, `animationEngine`, `.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock { opacity: 0 !important; }`)
                     } else
-                        document.getElementById('animationEngine').innerHTML += `.${tag} { opacity: 0; }`
+                        plutonny.output(`id add`, `animationEngine`, `.${tag} { opacity: 0; }`)
                 },
                 width: async function(tag, width) {
-                    document.getElementById('animationEngine').innerHTML += `.${tag} { width: ${width}; }`
+                    plutonny.output(`id add`, `animationEngine`, `.${tag} { width: ${width}; }`)
                 },
                 height: async function(tag, height) {
-                    document.getElementById('animationEngine').innerHTML += `.${tag} { height: ${height}; }`
+                    plutonny.output(`id add`, `animationEngine`, `.${tag} { height: ${height}; }`)
                 },
                 RESTORE: function() {
-                    document.getElementById('animationEngine').innerHTML = ``
+                    plutonny.output(`id`, `animationEngine`, ``)
                 }
             }
         </script>
@@ -491,7 +495,7 @@
                     } else { 
                         yearP = ((440 - 94) * ((j1 - DATESTATIC) / (j1 - d3)))
                     }
-                    plutonny.output('lineGeneral', `
+                    plutonny.output('id', 'lineGeneral', `
                     <div class="yearLine" style="background: var(--line-general); height: 100%; width: 100%;">
                         <div style="position: absolute; background: var(--con-color); height: 60px; padding: 0 3px; margin-top: -6px; margin-left: ${yearP}px;">
                             <div style="background: var(--text-color); height: 60px; width: 4px; border-radius: 100px;"></div>
@@ -508,7 +512,7 @@
                         }
                         for (let i in dbc) dbd.push(dbc[i][1])
                         let fastestEvent = dbc[dbd.indexOf(Math.min(...dbd))][0]
-                        plutonny.output('textGeneral', `
+                        plutonny.output('id', 'textGeneral', `
                         <p class="bold" style="font-size: 20px; margin: 14px 0 8px 0;">ближайшее событие:</p>
                         ${UI.event('small', counters[fastestEvent])}
                         `)
@@ -522,7 +526,7 @@
                             }
                             else injEvent += UI.event('large', counters[i], i)
                         }
-                        plutonny.output('contentOt', `
+                        plutonny.output('id', 'contentOt', `
                         <p class="bold" style="font-size: 32px; margin: 0; padding-left: 18px;">все события:</p>
                         <div style="height: 24px;"></div>
                         ${injEvent}
@@ -543,13 +547,13 @@
                     })
                     animationEngine.transfer('home>counter')
                     await plutonny.sleep(400)
-                    plutonny.output('lineGeneral', `
+                    plutonny.output('id', 'lineGeneral', `
                     <style>.lineGeneral { display: flex; align-items: center; }</style>
                     <div id="counterGenLine" class="counterGenLine" style="background: var(--line-${SEASON}); border-radius: 100px; height: 100%; width: 0px;"></div>
                     <p id="counterGenPer" class="counterGenPer bold" style="position: absolute; font-size: 28px; width: calc(100vw - 48px); text-align: center; margin: 0;"></p>
                     `)
                     animationEngine.height('blockAdd', '225px !important')
-                    plutonny.output('blockAdd', `
+                    plutonny.output('id', 'blockAdd', `
                     <style>.blockAdd { padding: 18px; }</style>
                     <p class="bold" style="margin: 0 0 12px 6px; font-size: 24px;">или:</p>
                     <div class="weekBlock">
@@ -607,7 +611,7 @@
                                 await plutonny.sleep(100)
                                 document.querySelector('#textGeneral').style.opacity = 0
                                 await plutonny.sleep(400)
-                                plutonny.output('textGeneral', `
+                                plutonny.output('id', 'textGeneral', `
                                 <div style="display: flex; align-items: center; flex-direction: column;">
                                     <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
                                     <p class="bold" style="margin: 0; font-size: 24px;">${counters[id].endText}</p>
@@ -647,7 +651,7 @@
                                 await plutonny.sleep(100)
                                 document.querySelector('#textGeneral').style.opacity = 0
                                 await plutonny.sleep(400)
-                                plutonny.output('textGeneral', `
+                                plutonny.output('id', 'textGeneral', `
                                 <div style="display: flex; align-items: center; flex-direction: column;">
                                     <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
                                     <p class="bold" style="margin: 0; font-size: 24px;">${counters[id].endText}</p>
@@ -687,7 +691,7 @@
                                 await plutonny.sleep(100)
                                 document.querySelector('#textGeneral').style.opacity = 0
                                 await plutonny.sleep(400)
-                                plutonny.output('textGeneral', `
+                                plutonny.output('id', 'textGeneral', `
                                 <div style="display: flex; align-items: center; flex-direction: column;">
                                     <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
                                     <p class="bold" style="margin: 0; font-size: 24px;">${counters[id].endText}</p>
@@ -723,7 +727,7 @@
                     })
                     document.querySelector('#textGeneral').style.opacity = 0
                     await animationEngine.transfer('home>settings')
-                    plutonny.output('blockGeneral', `
+                    plutonny.output('id', 'blockGeneral', `
                     <div class="blockSettings" style="opacity: 0;">
                         <div class="BconHA" id="CCB" onclick="clearCache()" style="background: var(--button-con-color); border-radius: 100px; height: 32px; display: flex; align-items: center; justify-content: center;">удалить кэш</div>    
                         <div style="height: 18px;"></div>
@@ -742,7 +746,7 @@
                     animationEngine.RESTORE()
                     animationEngine.op0('lineGeneral')
                     await plutonny.sleep(300)
-                    plutonny.output('blockGeneral', `
+                    plutonny.output('id', 'blockGeneral', `
                         <div class="lineGeneral" id="lineGeneral"></div>
                         <div class="textGeneral" id="textGeneral"></div>
                     `)
@@ -780,7 +784,7 @@
                     await plutonny.sleep(100)
                     animationEngine.height('blockAdd', '0px !important')
                     await plutonny.sleep(100)
-                    plutonny.output('blockAdd', ``)
+                    plutonny.output('id', 'blockAdd', ``)
                     animationEngine.RESTORE()
                     pageCreator.firstLoad()
                 }
