@@ -55,10 +55,10 @@
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="clgenld()">
         
         <!-- CSS and JS -->
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=27.07.2023-v30-b25"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=27.07.2023-v30-b25" as="style">
-        <link   rel="icon"                          href="static/g-icon.png?cache=27.07.2023-v30-b25">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=27.07.2023-v30-b25">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=28.07.2023-v30-b26"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=28.07.2023-v30-b26" as="style">
+        <link   rel="icon"                          href="static/g-icon.png?cache=28.07.2023-v30-b26">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=28.07.2023-v30-b26">
         <style  id="theming"                        ></style>
         <style  id="animationEngine"                ></style>
         
@@ -71,7 +71,7 @@
             "use strict";
             
             var siteVersion = '3.0'
-            var siteBuild = '25'
+            var siteBuild = '26'
 
             var DATESTATIC = new Date()
             let DYNAMICTIME = new Date()
@@ -503,12 +503,13 @@
                     </div>
                     `)
                     fetch(`/DBCOUNT.json?t=${DATESTATIC.getTime()}`).then((response) => { return response.json() }).then(async function (counters) {
-                        let dbc = [], dbd = []
+                        let dbc = []
+                        let dbd = []
                         for (let i = 1; i <= counters.count; i++) {
-                            let cd
-                            if (counters[i].date == undefined) cd = new Date(`${counters[i].Edate} ${counters[i].Etime}`)
-                            else cd = new Date(`${DATESTATIC.getFullYear()}-${counters[i].date}`)
-                            if ((cd - DATESTATIC) > 0) dbc.push([i, cd.getTime()])
+                            let cd = null
+                            if (counters[i].date == undefined) { cd = new Date(`${counters[i].Edate} ${counters[i].Etime}`) }
+                            else { cd = new Date(`${DATESTATIC.getFullYear()}-${counters[i].date}`) }
+                            if ((cd - DATESTATIC) > 0) { dbc.push([i, cd.getTime()]) }
                         }
                         for (let i in dbc) dbd.push(dbc[i][1])
                         let fastestEvent = dbc[dbd.indexOf(Math.min(...dbd))][0]
@@ -519,10 +520,10 @@
                         document.querySelector('#textGeneral').style.opacity = 1
                         let injEvent = ''
                         for (let i = 1; i <= counters.count; i++) {
-                            let cd
+                            let cdd
                             if (counters[i].date == undefined) { 
-                                cd = new Date(`${counters[i].Edate} ${counters[i].Etime}`)
-                                if (DATESTATIC <= cd) injEvent += UI.event('large', counters[i], i)
+                                cdd = new Date(`${counters[i].Edate} ${counters[i].Etime}`)
+                                if (DATESTATIC <= cdd) injEvent += UI.event('large', counters[i], i)
                             }
                             else injEvent += UI.event('large', counters[i], i)
                         }
