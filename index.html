@@ -86,7 +86,7 @@
                 { plutonny.console.warn('index.html -> preload checker', 'themeType is undefined, set to season'); localStorage.setItem('themeType', 'season') } 
                 
             document.addEventListener("click", (event) => {
-                if (event.target.matches("#modal") && !event.target.closest(".max-modal")) { document.querySelector(".modal").innerHTML = ""; UX.theme.get() }
+                if (event.target.matches("#modal") && !event.target.closest(".max-modal")) { UX.closeModal('dialog') }
             }, false )
         </script>
 
@@ -203,6 +203,7 @@
                         }
                     },
                     modalColor: () => {
+                        // for background color modal: #00000040
                         if (localStorage.getItem('themeType') == 'season') {
                             return window.matchMedia("(prefers-color-scheme: dark)").matches ? "#000000" : "#b8b8b8"
                         }
@@ -223,14 +224,18 @@
                             plutonny.output('id', 'modal', `
                                 <div class="max-modal" id="max-modal">
                                     <style>
-                                        div#modal { position: fixed; height: 100vh; width: 100vw; background: #00000040; display: flex; justify-content: center; align-items: flex-end; z-index: 100; }
+                                        div#modal { top: 100%; position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 100; }
                                         div#max-modal { width: 100%; padding: 24px; }
                                     </style>
                                     ${content}
                                 </div>
                             `)
                             await plutonny.sleep(200)
-                            document.getElementById("theme-color").content = UX.theme.modalColor()
+                            // document.getElementById("theme-color").content = UX.theme.modalColor()
+                            plutonny.output('id', 'modalWork', `
+                                div#modal { top: 0% !important; }
+                                div#page { filter: blur(5px); --webkit-filter: blur(5px); }
+                            `)
                             return true
                         } catch (e) {
                             plutonny.console.error('index.html -> UX.modal(dialog)', e)
@@ -239,11 +244,11 @@
                     }
                     else if (type == 'fullscreen') {
                         try {
-                            plutonny.output('id', 'modal', `
-                                <div class="max-modal" id="max-modal">
+                            plutonny.output('id', 'full-modal', `
+                                <div class="max-full-modal" id="max-full-modal">
                                     <style>
-                                        div#modal { position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 100; }
-                                        div.max-modal { width: 100%; }
+                                        div#full-modal { position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 100; }
+                                        div.max-full-modal { width: 100%; }
                                     </style>
                                     ${content}
                                 </div>
@@ -273,6 +278,17 @@
                         }
                     }
                     else plutonny.console.error('index.html -> UX.modal()', 'incorrect type of modal')
+                },
+                closeModal: async (type) => {
+                    if (type == 'dialog') {
+                        document.getElementById('modalWork').innerHTML = '';
+                        await plutonny.sleep(700);
+                        document.getElementById('modal').innerHTML = '';
+                    } 
+                    else if (type == 'fullscreen') {
+
+                    }
+                    else plutonny.console.error('index.html -> UX.closeModal()', 'incorrect type of modal')
                 }
             }
             UX.theme.get()
@@ -455,6 +471,7 @@
         <noscript style="color: white; font-size: 36px;">включите JavaScript чтобы пользоваться сайтом</noscript>
 
         <div class="modal" id="modal"></div>
+        <div class="full-modal" id="full-modal"></div>
 
         <div class="pageble" id="pageble">
             <div class="page" id="page">
@@ -556,11 +573,11 @@
                         <div style="backdrop-filter: blur(10px); --webkit-backdrop-filter: blur(10px); width: 100%; border-radius: 24px; display: flex;flex-direction: column; border-radius: 24px; overflow: hidden;">
                             <button style="background: var(--bg-modal-color); height: 52px; border-radius: 0px; color: #ff0000;" class="bold" onclick="dataSet.clear()">УДАЛИТЬ</button>
                             <div style="height: 1px; background: var(--con-alt-color);"></div>
-                            <button style="background: var(--bg-modal-color); height: 52px; border-radius: 0px;" onclick="document.getElementById('modal').innerHTML = ''; UX.theme.get()">отмена</button>
+                            <button style="background: var(--bg-modal-color); height: 52px; border-radius: 0px;" onclick="UX.closeModal('dialog')">отмена</button>
                         </div>
                     `)
                 },
-                clear: () => {
+                clear: async () => {
                     try {
                         navigator.serviceWorker.getRegistrations().then((registrations) => {
                             for(let registration of registrations) {
@@ -573,6 +590,8 @@
                         sessionStorage.clear()
                     }
                     catch (e) { plutonny.console.error('index.html -> dataSet.clear()', e) }
+                    UX.closeModal('dialog')
+                    await plutonny.sleep(700)
                     UX.modal('dialog', `
                     <div style="backdrop-filter: blur(10px); --webkit-backdrop-filter: blur(10px); width: 100%; background: var(--bg-modal-color); border-radius: 24px;">
                         <div style="height: 18px;"></div>
@@ -583,7 +602,7 @@
                     </div>
                     <div style="height: 24px;"></div>
                     <div style="backdrop-filter: blur(10px); --webkit-backdrop-filter: blur(10px); width: 100%; border-radius: 24px; display: flex;flex-direction: column; border-radius: 24px; overflow: hidden;">
-                        <button style="background: var(--bg-modal-color); height: 52px; border-radius: 0px;" onclick="document.getElementById('modal').innerHTML = ''; location.reload()">перезагрузить</button>
+                        <button style="background: var(--bg-modal-color); height: 52px; border-radius: 0px;" onclick="location.reload()">перезагрузить</button>
                     </div>
                     `)
                 }
