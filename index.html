@@ -88,6 +88,9 @@
             document.addEventListener("click", (event) => {
                 if (event.target.matches("#modal") && !event.target.closest(".max-modal")) { UX.closeModal('dialog') }
             }, false )
+            document.addEventListener("click", (event) => {
+                if (event.target.matches("#full-modal") && !event.target.closest(".full-max-modal")) { UX.closeModal('fullscreen') }
+            }, false )
         </script>
 
         <!-- UX -->
@@ -245,22 +248,25 @@
                     else if (type == 'fullscreen') {
                         try {
                             plutonny.output('id', 'full-modal', `
-                                <div class="max-full-modal" id="max-full-modal">
+                                <div class="full-max-modal" id="full-max-modal">
                                     <style>
-                                        div#full-modal { position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 100; }
-                                        div.max-full-modal { width: 100%; }
+                                        div#full-modal { top: 100%; position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 99; }
+                                        div#full-max-modal { width: 100%; height: calc(100vh - 32px); background: var(--bg-modal-color); backdrop-filter: blur(10px); --webkit-backdrop-filter: blur(10px); border-radius: 24px 24px 0 0; }
                                     </style>
+                                    <div style="margin: 16px 0; display: flex; justify-content: center;">
+                                        <div style="background: var(--con-alt-color); height: 8px; width: 100px; border-radius: 100px;"></div>
+                                    </div>
                                     ${content}
                                 </div>
-                            `) 
+                            `)
                             await plutonny.sleep(200)
                             plutonny.output('id', 'modalWork', `
-                                html, body {
-                                    background: #000000;
-                                }
+                                html, body { background: #000000; }
+                                div#full-modal { top: 0% !important; }
                                 .page {
                                     margin: 16px;
-                                    border-radius: 24px;
+                                    border-radius: 18px;
+                                    position: fixed;
                                 }
                                 @media (max-width: 540px) {
                                     .page { width: calc(100vw - 36px) !important; }
@@ -286,7 +292,11 @@
                         document.getElementById('modal').innerHTML = '';
                     } 
                     else if (type == 'fullscreen') {
-
+                        document.getElementById('modalWork').innerHTML = '';
+                        await plutonny.sleep(200);
+                        UX.theme.get()
+                        await plutonny.sleep(500);
+                        document.getElementById('full-modal').innerHTML = '';
                     }
                     else plutonny.console.error('index.html -> UX.closeModal()', 'incorrect type of modal')
                 }
@@ -345,7 +355,15 @@
                                 <p style="font-size: 24px; margin: 0 0 0 8px;">${COUNT.fastPer(d1, d2, event.type)}</p>
                                 </div>`
                     }
-                    
+                },
+                modal: {
+                    settings: () => {
+                        UX.modal('fullscreen', `
+                        `)
+                    },
+                    counter: (event) => {
+
+                    }
                 }
             }
         </script>
@@ -482,7 +500,7 @@
                         <div style="width: 8px;"></div>
                         <img src="static/emoji/heart.png" height="32px" width="32px">
                         <div style="margin-right: auto;"></div>
-                        <span onclick="()=>{}" class="material-symbols-rounded icoGo clickable" style="font-size: 32px !important; user-select: none;">settings</span>
+                        <span onclick="UI.modal.settings()" class="material-symbols-rounded icoGo clickable" style="font-size: 32px !important; user-select: none;">settings</span>
                         <div style="width: 46px;"></div>
                     </div>
                     <hr style="border: none; height: 1px; margin-top: 0; margin-bottom: 0; background-color: var(--text-color); opacity: 0.2; width: calc(100% - 20px);">
