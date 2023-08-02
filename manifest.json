@@ -1,5 +1,5 @@
 {
-  "version"          : "3.0.0",
+  "version"          : "3.1",
   "short_name"       : "my cat ❤️",
   "name"             : "my cat ❤️",
   "icons"            : [ { "src": "pwa-icon.png",  "sizes": "512x512", "type": "image/png", "purpose": "any maskable" } ],

@@ -1,99 +1,52 @@
 /* iclude fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-/* root colors without theme */
 :root {
-    --text-color:                 #f4f4f4;
-    --text-color-active:          #eeeeee;
-    --bg-color:                   #000000;
-    --con-color:                  #101010;
-    --con-color-hover:            #151515;
-    --con-color-active:           #202020;
-    --line-general-color:         #60606040;
-    --button-con-color:           #303030;
-    --button-con-color-hover:     #353535;
-    --button-con-color-active:    #404040;
-    --icon-color:                 #707070;
-
-    --line-winter:                linear-gradient(to right, #00aaffb3, #0066ffb3);
-    --line-autumn:                linear-gradient(to right, #ffff00b3, #ffaa00b3);
-    --line-spring:                linear-gradient(to right, #00ff66b3, #00ff00b3);
-    --line-summer:                linear-gradient(to right, #ff6600b3, #ff0000b3);
-    --line-newyear:               linear-gradient(to right, #ff0000b3 3%, #ffaa00b3 27%, #00ff00b3 65%, #0066ffb3 100%);
-    --line-general:               linear-gradient(90deg, rgba(0, 0, 255, 0.56) 0%, rgba(0, 255, 0, 0.64) 23.74%, rgba(255, 0, 0, 0.56) 58.09%, rgba(255, 255, 0, 0.64) 82.98%, rgba(0, 0, 255, 0.56) 100%);
-
-    --UI-winter:                  #007aff33;
-    --UI-autumn:                  #ff7a0033;
-    --UI-spring:                  #00ff3333;
-    --UI-summer:                  #ff000033;
-    --UI-newyear:                 #ff00ff33;
+    --line-general: linear-gradient(90deg, rgba(0, 0, 255, 0.56) 0%, rgba(0, 255, 0, 0.64) 23.74%, rgba(255, 0, 0, 0.56) 58.09%, rgba(255, 255, 0, 0.64) 82.98%, rgba(0, 0, 255, 0.56) 100%);
     
-    --UI-icon-neutral:            #ffffff  ;
-    --UI-icon-neutral-op:         #ffffff40;
-    --UI-icon-blue:               #0000ff  ;
-    --UI-icon-blue-op:            #0000ff40;
-    --UI-icon-green:              #00ff00  ;
-    --UI-icon-green-op:           #00ff0040;
-    --UI-icon-red:                #ff0000  ;
-    --UI-icon-red-op:             #ff000040;
-    --UI-icon-yellow:             #ffff00  ;
-    --UI-icon-yellow-op:          #ffff0040;
-    --UI-icon-violet:             #ff00ff  ;
-    --UI-icon-violet-op:          #ff00ff40;
-    --UI-icon-breeze:             #00ffff  ;
-    --UI-icon-breeze-op:          #00ffff40;
-    --UI-icon-dark:               #909090  ;
-    --UI-icon-dark-op:            #90909040;
+    --line-winter:  linear-gradient(to right, #00aaffb3, #0066ffb3);
+    --line-autumn:  linear-gradient(to right, #ffff00b3, #ffaa00b3);
+    --line-spring:  linear-gradient(to right, #00ff66b3, #00ff00b3);
+    --line-summer:  linear-gradient(to right, #ff6600b3, #ff0000b3);
+    --line-newyear: linear-gradient(to right, #ff0000b3 3%, #ffaa00b3 27%, #00ff00b3 65%, #0066ffb3 100%);
+    --UI-winter:    #007aff33;
+    --UI-autumn:    #ff7a0033;
+    --UI-spring:    #00ff3333;
+    --UI-summer:    #ff000033;
+    --UI-newyear:   #ff00ff33;
+
+    --line-night:   linear-gradient(to right, #640096b3, #7B00B9b3);
+    --line-sunrise: linear-gradient(to right, #AEAE00b3, #D0D000b3);
+    --line-day:     linear-gradient(to right, #1189AFb3, #1D9FC8b3);
+    --line-evening: linear-gradient(to right, #A0AE00b3, #D0AF00b3);
+    --line-sunset:  linear-gradient(to right, #CD5600b3, #FF7A00b3);
+    --UI-night:     #AA00FF33;
+    --UI-sunrise:   #FFFF0033;
+    --UI-day:       #1D9FC8cc;
+    --UI-evening:   #FFFF0088;
+    --UI-sunset:    #DA710Fcc;
+    --UI-night-b:   #000000;
+    --UI-sunrise-b: #87D0E7;
+    --UI-day-b:     #F5F5F5;
+    --UI-evening-b: #CDDDF5;
+    --UI-sunset-b:  #651048;
 }
 
 /* scrollbar disable only to Chrome users */
 ::-webkit-scrollbar { width: 0px; height: 0px; }
 
-/* styles for all pages */
-html, body { margin: 0; overflow-x: hidden; transition: 400ms all; transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
-h1, h2, h3, h4, h5, h6, p, a, b, td, div, li, button, br, input, label { z-index: 2; transition: 400ms all; transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); font-family: 'Montserrat'; word-break: keep-all; letter-spacing: 0.05em; }
-/* colors */
+* {
+    margin: 0;
+    transition: 700ms all;
+    transition-timing-function: cubic-bezier(0,0,.38,1.12);
+    font-family: 'Montserrat';
+    word-break: keep-all;
+    letter-spacing: 0.05em;
+    cursor: default;
+    color: var(--text-color);
+}
+
 html, body { background: var(--bg-color); }
-h1, h2, h3, h4, h5, h6, p, a, b, td, div, li, button, br, input, label, small { color: var(--text-color); }
-h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::selection, p::selection, a::selection, b::selection, td::selection, div::selection, svg::selection, li::selection, img::selection, button::selection, br::selection, input::selection, label::selection, span::selection, iframe::selection, small::selection { background-color: var(--icon-color); color: var(--text-color-active); }
-h1::-moz-selection, h2::-moz-selection, h3::-moz-selection, h4::-moz-selection, h5::-moz-selection, h6::-moz-selection, p::-moz-selection, a::-moz-selection, b::-moz-selection, td::-moz-selection, div::-moz-selection, svg::-moz-selection, li::-moz-selection, img::-moz-selection, button::-moz-selection, br::-moz-selection, input::-moz-selection, label::-moz-selection, span::-moz-selection, iframe::-moz-selection, small::-moz-selection { background-color: var(--icon-color); color: var(--text-color-active); }
-a:active { color: var(--text-color-active); }
-
-button { background-color: var(--con-color); border: 0; cursor: pointer; border-radius: 24px; font-size: 17px; padding: 8px 16px; }
-button:hover { background-color: var(--con-color-hover) !important; cursor: pointer; }
-button:active { background-color: var(--con-color-active) !important; cursor: pointer; }
-
-.conHA, .buttonHome { background: var(--con-color); cursor: pointer;}
-.conHA:hover, .buttonHome:hover { background: var(--con-color-hover) !important; cursor: pointer; }
-.conHA:active, .buttonHome:active { background: var(--con-color-active) !important; cursor: pointer; }
-
-.BconHA { background: var(--button-con-color); cursor: pointer;}
-.BconHA:hover { background: var(--button-con-color-hover) !important; cursor: pointer; }
-.BconHA:active { background: var(--button-con-color-active) !important; cursor: pointer; }
-
-.page, .pageble { min-height: 100vh; }
-.content { padding: 24px 24px 96px 24px; }
-.bold { font-weight: 600 !important; letter-spacing: 0.1em !important; }
-
-/* page creator */
-.blockGeneral { 
-    min-height: 130px;
-    background: var(--con-color);
-    border-radius: 24px;
-    padding: 18px;
-}
-.lineGeneral {
-    height: 48px;
-    width: 100%;
-    background: var(--line-general-color);
-    border-radius: 100px;
-    overflow: hidden;
-}
-.blockAdd { 
-    height: 0px;
-    background: var(--con-color);
-    border-radius: 24px;
-}
 
 /* PC frame support */
 @media (max-width: 540px) {
@@ -106,40 +59,42 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
     .max-modal { width: 440px !important; }
 }
 
+h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::selection, p::selection, a::selection, b::selection, td::selection, div::selection, svg::selection, li::selection, img::selection, button::selection, br::selection, input::selection, label::selection, span::selection, iframe::selection, small::selection { background-color: var(--icon-color); color: var(--text-color-active); }
+h1::-moz-selection, h2::-moz-selection, h3::-moz-selection, h4::-moz-selection, h5::-moz-selection, h6::-moz-selection, p::-moz-selection, a::-moz-selection, b::-moz-selection, td::-moz-selection, div::-moz-selection, svg::-moz-selection, li::-moz-selection, img::-moz-selection, button::-moz-selection, br::-moz-selection, input::-moz-selection, label::-moz-selection, span::-moz-selection, iframe::-moz-selection, small::-moz-selection { background-color: var(--icon-color); color: var(--text-color-active); }
+button { background-color: var(--con-color); border: 0; cursor: pointer; border-radius: 24px; font-size: 17px; padding: 8px 16px; }
+button:hover { background-color: var(--con-color-hover) !important; cursor: pointer; }
+button:active { background-color: var(--con-color-active) !important; cursor: pointer; }
+
+.bold { font-weight: 600 !important; letter-spacing: 0.1em !important; }
+.clickable:hover { cursor: pointer; }
+.clickable:active { cursor: pointer; color: var(--text-color-active) !important; }
+.page, .pageble { min-height: 100vh; background-attachment: fixed; }
+.content { padding: 24px; }
+
 /* UI elements */
+.header { z-index: 3; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.hdr { height: 68px; width: 100%; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; }
 
-.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock {
-    opacity: 0;
-    height: 24px;
-    width: 100%;
-    border-radius: 100px;
-    overflow: hidden;
-    display: flex !important;
-    align-items: center;
-    background: var(--line-general-color);
-}
-
-.weekLine, .dayLine, .hourLine, .minuteLine, .secondLine {
-    width: 0px;
-    height: 24px;
-    border-radius: 100px; 
-}
-
-.weekPer, .dayPer, .hourPer, .minutePer, .secondPer {
-    position: absolute;
-    font-size: 18px;
-    width: calc(100vw - 48px);
-    text-align: center;
-    margin: 0;
-}
-
-.conHA {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
+.blockGeneral { 
+    height: 138px;
     background: var(--con-color);
     border-radius: 24px;
-    margin-bottom: 16px;
     padding: 18px;
 }
+.lineGeneral {
+    height: 48px;
+    width: 100%;
+    background: var(--line-general);
+    border-radius: 100px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.countersContainer {
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.conHA{ background: var(--con-color); cursor: pointer; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); padding: 18px; }
+.conHA:hover { background: var(--con-color-hover) !important; cursor: pointer; }
+.conHA:active { background: var(--con-color-active) !important; cursor: pointer; }

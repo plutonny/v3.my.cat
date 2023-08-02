@@ -6,6 +6,7 @@
         "endText": "с годовщиной",
         "date": "5-27",
         "time": "22:14",
+        "startFrom": "2022",
         "icon": "group",
         "color": "blue"
     },
@@ -27,6 +28,7 @@
         "processText": "до дня рождения Макса",
         "endText": "с днем рождения, Макс",
         "date": "6-11",
+        "startFrom": "2002",
         "icon": "celebration",
         "color": "red"
     },
@@ -36,6 +38,7 @@
         "processText": "до дня рождения Вити",
         "endText": "с днем рождения, Витя",
         "date": "8-22",
+        "startFrom": "2005",
         "icon": "emoji_nature",
         "color": "yellow"
     },
