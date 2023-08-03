@@ -17,7 +17,7 @@
             var gIc = () => { 
                 let c = setInterval(() => {
                     try { document.getElementById('gIc').remove() } catch {}
-                }, 1); 
+                }, 100); 
             }
         </script>
         
@@ -27,9 +27,9 @@
                 font-style: normal;
                 font-weight: 100 700;
                 src: url(https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2) format('woff2');
-                }
+            }
 
-                .material-symbols-rounded {
+            .material-symbols-rounded {
                 font-family: 'Material Symbols Rounded';
                 font-weight: normal;
                 font-style: normal;
@@ -51,11 +51,11 @@
         <link   rel="stylesheet"                    href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="gIc()">
 
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=30.07.2023-v31-b27"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=30.07.2023-v31-b27" as="style">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=03.08.2023-v31-b28"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=03.08.2023-v31-b28" as="style">
         
-        <link   rel="icon"                          href="static/g-icon.png?cache=30.07.2023-v31-b27">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=30.07.2023-v31-b27">
+        <link   rel="icon"                          href="static/g-icon.png?cache=03.08.2023-v31-b28">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=03.08.2023-v31-b28">
 
         <style id="theming"></style>
         <style id="modalWork"></style>
@@ -68,7 +68,7 @@
             "use strict";
             
             var siteVersion = '3.1'
-            var siteBuild = '27'
+            var siteBuild = '28'
 
             if (window.location.href.split('?')[1] == 'debug') plutonny.get.eruda()
 
@@ -176,7 +176,7 @@
                         --UI-icon-dark:               #909090  ;
                         --UI-icon-dark-op:            #90909040;
                     `,
-                    get: async () => {
+                    get: async (noHead) => {
                         if (localStorage.getItem('themeType') == 'season') {
                             plutonny.output('id', 'theming', `
                             @media (prefers-color-scheme: light) { 
@@ -189,18 +189,18 @@
                                 background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(87.62% 39.56% at -37.62% 39.56%, var(--UI-${SEASON}) 0%, rgba(0, 0, 0, 0) 100%), var(--back-page);
                             }
                             `)
-                            document.getElementById("theme-color").content = window.matchMedia("(prefers-color-scheme: dark)").matches ? "#000000" : "#f4f4f4"
+                            if (!noHead) document.getElementById("theme-color").content = window.matchMedia("(prefers-color-scheme: dark)").matches ? "#000000" : "#f4f4f4"
                         }
                         else if (localStorage.getItem('themeType') == 'time') {
                             plutonny.output('id', 'theming', `
                             :root { ${['night', 'sunset'].includes(DAYTIMER) ? UX.theme.UIdark : UX.theme.UIlight} }
-                            html, body { background: var(--UI-${DAYTIMER}-b) !important; }
+                            html, body { background: var(--UI-${DAYTIMER}-b); }
                             .page {
                                 background: radial-gradient(71.06% 29.13% at 131.07% 70.87%, var(--UI-${DAYTIMER}) 0%, rgba(0, 0, 0, 0) 100%), radial-gradient(87.62% 39.56% at -37.62% 39.56%, var(--UI-${DAYTIMER}) 0%, rgba(0, 0, 0, 0) 100%), var(--UI-${DAYTIMER}-b);
                             }
                             `)
                             await plutonny.sleep(100)
-                            document.getElementById("theme-color").content = window.getComputedStyle(document.body).getPropertyValue(`--UI-${DAYTIMER}-b`)
+                            if (!noHead) document.getElementById("theme-color").content = window.getComputedStyle(document.body).getPropertyValue(`--UI-${DAYTIMER}-b`)
                         } else {
                             plutonny.console.error('index.html -> UX.theme.get()', 'theme type is indefined')
                         }
@@ -222,6 +222,7 @@
                     }
                 },
                 modal: async (type, content) => {
+                    UX.theme.get(false)
                     if (type == 'dialog') {
                         try {
                             plutonny.output('id', 'modal', `
@@ -251,7 +252,7 @@
                                 <div class="full-max-modal" id="full-max-modal">
                                     <style>
                                         div#full-modal { top: 100%; position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 99; }
-                                        div#full-max-modal { width: 100%; height: calc(100vh - 32px); background: var(--bg-modal-color); backdrop-filter: blur(10px); --webkit-backdrop-filter: blur(10px); border-radius: 24px 24px 0 0; }
+                                        div#full-max-modal { width: 100%; height: calc(100vh - 32px); background: var(--bg-modal-color); backdrop-filter: blur(30px); --webkit-backdrop-filter: blur(30px); border-radius: 24px 24px 0 0; }
                                     </style>
                                     <div style="margin: 16px 0; display: flex; justify-content: center;">
                                         <div style="background: var(--con-alt-color); height: 8px; width: 100px; border-radius: 100px;"></div>
@@ -273,6 +274,7 @@
                                 }
                                 @media (min-width: 541px) {
                                     .page { width: 404px !important; }
+                                    .full-max-modal { width: 360px !important; }
                                 }
                             `) 
                             await plutonny.sleep(200)
@@ -294,14 +296,14 @@
                     else if (type == 'fullscreen') {
                         document.getElementById('modalWork').innerHTML = '';
                         await plutonny.sleep(200);
-                        UX.theme.get()
+                        UX.theme.get(false)
                         await plutonny.sleep(500);
                         document.getElementById('full-modal').innerHTML = '';
                     }
                     else plutonny.console.error('index.html -> UX.closeModal()', 'incorrect type of modal')
                 }
             }
-            UX.theme.get()
+            UX.theme.get(false)
         </script>
 
         <!-- UI -->
@@ -359,6 +361,31 @@
                 modal: {
                     settings: () => {
                         UX.modal('fullscreen', `
+                        <style>
+                         .full-max-modal { padding: 0 40px !important; }
+                        </style>
+                        <div style="height: 28px;"></div>
+                        <p style="font-size: 32px;" class="bold">цвета:</p>
+                        <div style="height: 24px;"></div>
+                        <div style="display: flex;">
+                            <button onclick="localStorage.setItem('themeType', 'season'); document.getElementById('chaBut1').style.border = '2px solid var(--con-alt-color)'; document.getElementById('chaBut2').style.border = 'none'; UX.theme.get(true); document.getElementById('theme-color').content = '#000000';" id="chaBut1" style="${localStorage.getItem('themeType') == 'season' ? 'border: 2px solid var(--con-alt-color); ' : ''} display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; height: 220px; width: 50%;">
+                                <span class="material-symbols-rounded icoGo" style="font-size: 80px !important; user-select: none;">calendar_today</span>
+                                <p style="text-align: center;">по времени года</p>
+                            </button>
+                            <div style="width: 24px;"></div>
+                            <button onclick="localStorage.setItem('themeType', 'time'); document.getElementById('chaBut1').style.border = 'none'; document.getElementById('chaBut2').style.border = '2px solid var(--con-alt-color)'; UX.theme.get(true); document.getElementById('theme-color').content = '#000000';" id="chaBut2" style="${localStorage.getItem('themeType') == 'time' ? 'border: 2px solid var(--con-alt-color); ' : ''} display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; height: 220px; width: 50%;">
+                                <span class="material-symbols-rounded icoGo" style="font-size: 80px !important; user-select: none;">schedule</span>
+                                <p style="text-align: center;">по времени суток</p>
+                            </button>
+                        </div>
+                        <div style="height: 24px;"></div>
+                        <div style="display: flex; flex-direction: column; border-radius: 24px; overflow: hidden;">
+                            <button onclick="dataSet.cache()" id="CCB" style="border-radius: 0px;">очистить кэш</button>
+                            <div style="height: 1px; background: var(--con-alt-color);"></div>
+                            <button onclick="dataSet.clearModal()" style="border-radius: 0px;">удалить все данные</button>
+                        </div>
+                        <div style="height: 24px;"></div>
+                        <p style="text-align: center;" class="bold">v${siteVersion} (${siteBuild})</p>
                         `)
                     },
                     counter: (event) => {
