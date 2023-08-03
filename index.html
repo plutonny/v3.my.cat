@@ -85,6 +85,10 @@
             if (localStorage.getItem('themeType') == null || localStorage.getItem('themeType') == '')
                 { plutonny.console.warn('index.html -> preload checker', 'themeType is undefined, set to season'); localStorage.setItem('themeType', 'season') } 
                 
+            var UISEDT = ''
+            if (localStorage.getItem('themeType') == 'season') UISEDT = SEASON
+            if (localStorage.getItem('themeType') == 'time') UISEDT = DAYTIMER
+
             document.addEventListener("click", (event) => {
                 if (event.target.matches("#modal") && !event.target.closest(".max-modal")) { UX.closeModal('dialog') }
             }, false )
@@ -255,7 +259,7 @@
                                         div#full-max-modal { width: 100%; height: calc(100vh - 32px); background: var(--bg-modal-color); backdrop-filter: blur(30px); --webkit-backdrop-filter: blur(30px); border-radius: 24px 24px 0 0; }
                                     </style>
                                     <div style="margin: 16px 0; display: flex; justify-content: center;">
-                                        <div style="background: var(--con-alt-color); height: 8px; width: 100px; border-radius: 100px;"></div>
+                                        <div onclick="UX.closeModal('fullscreen')" style="background: var(--con-alt-color); height: 8px; width: 100px; border-radius: 100px;"></div>
                                     </div>
                                     ${content}
                                 </div>
@@ -296,9 +300,17 @@
                     else if (type == 'fullscreen') {
                         document.getElementById('modalWork').innerHTML = '';
                         await plutonny.sleep(200);
+                        clearInterval(ND)
+                        clearInterval(GP)
+                        clearInterval(AW)
+                        clearInterval(AD)
+                        clearInterval(AH)
+                        clearInterval(AM)
+                        clearInterval(AS)
                         UX.theme.get(false)
                         await plutonny.sleep(500);
                         document.getElementById('full-modal').innerHTML = '';
+                        
                     }
                     else plutonny.console.error('index.html -> UX.closeModal()', 'incorrect type of modal')
                 }
@@ -308,6 +320,13 @@
 
         <!-- UI -->
         <script type="text/javascript">
+            var ND = null
+            var GP = null
+            var AW = null
+            var AD = null
+            var AH = null
+            var AM = null
+            var AS = null
             var UIelements = 0
             var UI = {
                 event: (size, event, id) => {
@@ -341,7 +360,7 @@
                             } else {
                                 [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
                             }
-                            return `<div id="UIelement${UIelements}" onclick="pageCreator.counter(${id})" class="conHA" style="opacity: 0;">
+                            return `<div id="UIelement${UIelements}" onclick="UI.modal.counter(${id})" class="conHA" style="opacity: 0;">
                                 <div style="height: 42px; width: 42px;">
                                     ${plutonny.UI.gIcon({
                                         size: 42,
@@ -388,8 +407,140 @@
                         <p style="text-align: center;" class="bold">v${siteVersion} (${siteBuild})</p>
                         `)
                     },
-                    counter: (event) => {
+                    counter: (id) => {
+                        let event = JSON.parse(sessionStorage.getItem(`id${id}`))
+                        UX.modal('fullscreen', `
+                        <style>
+                         .full-max-modal { padding: 0 40px !important; }
+                        </style>
+                        <div style="height: 28px;"></div>
+                        <p style="font-size: 32px; padding-left: 18px;" class="bold">${event.processText}:</p>
+                        <div style="height: 28px;"></div>
+                        <div class="countGenCon">
+                            <div class="countLine" id="countLine">
+                                <div id="countGenLine" class="countGenLine" style="background: var(--line-${UISEDT}); border-radius: 100px; height: 100%; width: 0px;"></div>
+                                <p id="countGenPer" class="countGenPer bold" style="position: absolute; font-size: 28px; text-align: center; margin: 0;"></p>
+                            </div>
+                            <div class="countGenText" id="countGenText">
+                                <p class="bold" style="font-size: 20px; margin: 18px 0;"></p>
+                            </div>
+                        </div>
+                        <div style="height: 28px;"></div>
+                        <p class="bold" style="font-size: 32px; padding-left: 18px;">или:</p>
+                        <div style="height: 28px;"></div>
+                        <div class="countAddCon">
+                            <div class="weekBlock">
+                                <div id="weekLine" class="weekLine" style="background: var(--line-${UISEDT});"></div>
+                                <p id="weekPer" class="weekPer"></p>
+                            </div>
+                            <div style="height: 18px;"></div>
+                            <div class="dayBlock">
+                                <div id="dayLine" class="dayLine" style="background: var(--line-${UISEDT});"></div>
+                                <p id="dayPer" class="dayPer"></p>
+                            </div>
+                            <div style="height: 18px;"></div>
+                            <div class="hourBlock">
+                                <div id="hourLine" class="hourLine" style="background: var(--line-${UISEDT});"></div>
+                                <p id="hourPer" class="hourPer"></p>
+                            </div>
+                            <div style="height: 18px;"></div>
+                            <div class="minuteBlock">
+                                <div id="minuteLine" class="minuteLine" style="background: var(--line-${UISEDT});"></div>
+                                <p id="minutePer" class="minutePer"></p>
+                            </div>
+                            <div style="height: 18px;"></div>
+                            <div class="secondBlock">
+                                <div id="secondLine" class="secondLine" style="background: var(--line-${UISEDT});"></div>
+                                <p id="secondPer" class="secondPer"></p>
+                            </div>
+                        </div>
+                        `)
 
+                        if (event.type == 'dayInYear') {
+                            DYNAMICTIME = new Date()
+                            let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
+                            if ((DYNAMICTIME.getMonth() == d1.getMonth()) && (DYNAMICTIME.getDate() == d1.getDate())) {
+                                document.querySelector('#counterGenLine').style.width = '100%'
+                                plutonny.output('id', 'textGeneral', `
+                                <div style="display: flex; align-items: center; flex-direction: column;">
+                                    <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
+                                    <p class="bold" style="margin: 0; font-size: 24px;">${event.endText}</p>
+                                </div>
+                                `)
+                            }
+                            COUNT.general.percents(d1, d2, event.processText)
+                            COUNT.general.week(d1, d2)
+                            COUNT.general.day(d1, d2)
+                            COUNT.general.hour(d1, d2)
+                            COUNT.general.minute(d1, d2)
+                            COUNT.general.second(d1, d2)
+
+                            ND = setInterval(() => { DYNAMICTIME = new Date() }, 100)
+                            GP = setInterval(() => { COUNT.general.percents(d1, d2, event.processText) }, 100)
+                            AW = setInterval(() => { COUNT.general.week(d1, d2) }, 1000)
+                            AD = setInterval(() => { COUNT.general.day(d1, d2) }, 1000)
+                            AH = setInterval(() => { COUNT.general.hour(d1, d2) }, 1000)
+                            AM = setInterval(() => { COUNT.general.minute(d1, d2) }, 300)
+                            AS = setInterval(() => { COUNT.general.second(d1, d2) }, 50)
+                        }
+                        if (event.type == 'timeInYear') {
+                            DYNAMICTIME = new Date()
+                            let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
+                            let d3 = UX.dateThisYear(event.date, event.time)
+                            if ((DYNAMICTIME.getMonth() == d1.getMonth()) && (DYNAMICTIME.getDate() == d1.getDate()) && DATESTATIC >= d3) {
+                                document.querySelector('#counterGenLine').style.width = '100%'
+                                document.querySelector('#counterGenPer').innerHTML = '100 %'
+                                plutonny.output('id', 'textGeneral', `
+                                <div style="display: flex; align-items: center; flex-direction: column;">
+                                    <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
+                                    <p class="bold" style="margin: 0; font-size: 24px;">${event.endText}</p>
+                                </div>
+                                `)
+                            }
+                            COUNT.general.percents(d1, d2, event.processText)
+                            COUNT.general.week(d1, d2)
+                            COUNT.general.day(d1, d2)
+                            COUNT.general.hour(d1, d2)
+                            COUNT.general.minute(d1, d2)
+                            COUNT.general.second(d1, d2)
+
+                            ND = setInterval(() => { DYNAMICTIME = new Date() }, 100)
+                            GP = setInterval(() => { COUNT.general.percents(d1, d2, event.processText) }, 100)
+                            AW = setInterval(() => { COUNT.general.week(d1, d2) }, 1000)
+                            AD = setInterval(() => { COUNT.general.day(d1, d2) }, 1000)
+                            AH = setInterval(() => { COUNT.general.hour(d1, d2) }, 1000)
+                            AM = setInterval(() => { COUNT.general.minute(d1, d2) }, 300)
+                            AS = setInterval(() => { COUNT.general.second(d1, d2) }, 50)
+                        }
+                        if (event.type == 'once') {
+                            DYNAMICTIME = new Date()
+                            let d1 = new Date(event.Sdate.split('-')[0], event.Sdate.split('-')[1] - 1, event.Sdate.split('-')[2], event.Stime.split(':')[0], event.Stime.split(':')[1])
+                            let d2 = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
+                            if (DYNAMICTIME >= d2) {
+                                document.querySelector('#counterGenLine').style.width = '100%'
+                                document.querySelector('#counterGenPer').innerHTML = '100 %'
+                                plutonny.output('id', 'textGeneral', `
+                                <div style="display: flex; align-items: center; flex-direction: column;">
+                                    <img src="/static/emoji/party.png" style="height: 120px; width: 120px; padding: 28px;">
+                                    <p class="bold" style="margin: 0; font-size: 24px;">${event.endText}</p>
+                                </div>
+                                `)
+                            }
+                            COUNT.general.percents(d1, d2, event.processText)
+                            COUNT.general.week(d1, d2)
+                            COUNT.general.day(d1, d2)
+                            COUNT.general.hour(d1, d2)
+                            COUNT.general.minute(d1, d2)
+                            COUNT.general.second(d1, d2)
+
+                            ND = setInterval(() => { DYNAMICTIME = new Date() }, 100)
+                            GP = setInterval(() => { COUNT.general.percents(d1, d2, event.processText) }, 100)
+                            AW = setInterval(() => { COUNT.general.week(d1, d2) }, 1000)
+                            AD = setInterval(() => { COUNT.general.day(d1, d2) }, 1000)
+                            AH = setInterval(() => { COUNT.general.hour(d1, d2) }, 1000)
+                            AM = setInterval(() => { COUNT.general.minute(d1, d2) }, 300)
+                            AS = setInterval(() => { COUNT.general.second(d1, d2) }, 50)
+                        }
                     }
                 }
             }
@@ -424,17 +575,16 @@
                                 r  -=            rm * 60
                             let rs  = Math.floor(r)
 
-                            plutonny.output('id', 'textGeneral', `
-                            <p class="bold" style="font-size: 20px; margin: 14px 0 8px 0;">${textPROCESS}:</p>
-                            <p style="margin: 18px 0 0 0; font-size: 14px;">
+                            plutonny.output('id', 'countGenText', `
+                            <p style="margin: 18px 0 0 0; font-size: 14px; position: absolute;">
                                 ${plutonny.UI.rus('day', rd)},&nbsp;${plutonny.UI.rus('hour', rh)},&nbsp;${plutonny.UI.rus('minute', rm)},&nbsp;${plutonny.UI.rus('second', rs)}
                             </p>`)
 
                             let pd100 = (START - DYNAMICTIME) / (START - END) * 100
                             let pm100 = parseFloat(parseInt((pd100 * 1000) + 1)) / 1000
 
-                            plutonny.output('id', 'counterGenPer', `${pm100} %`)
-                            document.querySelector('#counterGenLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * pm100}px`
+                            plutonny.output('id', 'countGenPer', `${pm100} %`)
+                            document.querySelector('#countGenLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 80) / 100) * pm100}px`
                         }
                     },
                     week: (START, END) => {
@@ -448,8 +598,8 @@
 
                             let rw  = Math.floor((r / 60 / 60 / 24 / 7) * 100) / 100
                             document.querySelector('#weekPer').innerHTML = plutonny.UI.rus('week', rw)
-                            document.querySelector('#weekLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * Math.floor((rmm % 1)*100)}px`
-                            document.querySelector('#dayLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * Math.floor((rw % 1)*100)}px`
+                            document.querySelector('#weekLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 80) / 100) * Math.floor((rmm % 1)*100)}px`
+                            document.querySelector('#dayLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 80) / 100) * Math.floor((rw % 1)*100)}px`
                         }
                     },
                     day: (START, END) => {
@@ -459,7 +609,7 @@
 
                             let rd  = Math.floor((r / 60 / 60 / 24) * 100) / 100
                             document.querySelector('#dayPer').innerHTML = plutonny.UI.rus('day', rd)
-                            document.querySelector('#hourLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * Math.floor((rd % 1)*100)}px`
+                            document.querySelector('#hourLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 80) / 100) * Math.floor((rd % 1)*100)}px`
                         }
 
                     },
@@ -470,7 +620,7 @@
 
                             let rh  = Math.floor((r / 60 / 60) * 100) / 100
                             document.querySelector('#hourPer').innerHTML = plutonny.UI.rus('hour', rh)
-                            document.querySelector('#minuteLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * Math.floor((rh % 1)*100)}px`
+                            document.querySelector('#minuteLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 80) / 100) * Math.floor((rh % 1)*100)}px`
                         }
 
                     },
@@ -481,7 +631,7 @@
 
                             let rm  = Math.floor((r / 60) * 100) / 100
                             document.querySelector('#minutePer').innerHTML = plutonny.UI.rus('minute', rm)
-                            document.querySelector('#secondLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * Math.floor((rm % 1)*100)}px`
+                            document.querySelector('#secondLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 80) / 100) * Math.floor((rm % 1)*100)}px`
                         }
 
                     },
@@ -581,6 +731,7 @@
                 document.getElementById(`UIelement${UIelements}`).style.opacity = 1
                 await plutonny.sleep(50)
                 for (let i = 1; i <= counters.count; i++) {
+                    sessionStorage.setItem(`id${i}`, JSON.stringify(counters[i]))
                     let cdd
                     if (counters[i].type == 'once') { 
                         cdd = new Date(`${counters[i].Edate} ${counters[i].Etime}`)

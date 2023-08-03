@@ -52,11 +52,13 @@ html, body { background: var(--bg-color); }
 @media (max-width: 540px) {
     .pageble { width: 100vw; }
     .page { width: 100vw; }
+    .weekPer, .dayPer, .hourPer, .minutePer, .secondPer, .countGenPer { width: calc(100vw - 80px - 36px); }
 }
 @media (min-width: 541px) {
     .pageble { width: 100vw; display: flex; justify-content: center; }
     .page { width: 440px; }
     .max-modal { width: 440px !important; }
+    .weekPer, .dayPer, .hourPer, .minutePer, .secondPer, .countGenPer { width: calc(440px - 80px - 36px); }
 }
 
 h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::selection, p::selection, a::selection, b::selection, td::selection, div::selection, svg::selection, li::selection, img::selection, button::selection, br::selection, input::selection, label::selection, span::selection, iframe::selection, small::selection { background-color: var(--icon-color); color: var(--text-color-active); }
@@ -100,3 +102,49 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
 .conHA{ background: var(--con-color); cursor: pointer; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); padding: 18px; }
 .conHA:hover { background: var(--con-color-hover) !important; cursor: pointer; }
 .conHA:active { background: var(--con-color-active) !important; cursor: pointer; }
+
+.countGenCon { 
+    background: var(--con-color);
+    border-radius: 24px;
+    padding: 18px;
+    height: 84px;
+}
+
+.countAddCon { 
+    background: var(--con-color);
+    border-radius: 24px;
+    padding: 18px;
+}
+
+.countLine {
+    height: 48px;
+    width: 100%;
+    background: var(--line-general-color);
+    border-radius: 100px;
+    overflow: hidden;
+    display: flex; 
+    align-items: center; 
+}
+
+.weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock {
+    height: 24px;
+    width: 100%;
+    border-radius: 100px;
+    overflow: hidden;
+    display: flex !important;
+    align-items: center;
+    background: var(--line-general-color);
+}
+
+.weekLine, .dayLine, .hourLine, .minuteLine, .secondLine {
+    width: 0px;
+    height: 24px;
+    border-radius: 100px; 
+}
+
+.weekPer, .dayPer, .hourPer, .minutePer, .secondPer {
+    position: absolute;
+    font-size: 18px;
+    text-align: center;
+    margin: 0;
+}
