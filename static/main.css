@@ -64,7 +64,7 @@ html, body { background: var(--bg-color); }
 
 h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, h6::selection, p::selection, a::selection, b::selection, td::selection, div::selection, svg::selection, li::selection, img::selection, button::selection, br::selection, input::selection, label::selection, span::selection, iframe::selection, small::selection { background-color: var(--icon-color); color: var(--text-color-active); }
 h1::-moz-selection, h2::-moz-selection, h3::-moz-selection, h4::-moz-selection, h5::-moz-selection, h6::-moz-selection, p::-moz-selection, a::-moz-selection, b::-moz-selection, td::-moz-selection, div::-moz-selection, svg::-moz-selection, li::-moz-selection, img::-moz-selection, button::-moz-selection, br::-moz-selection, input::-moz-selection, label::-moz-selection, span::-moz-selection, iframe::-moz-selection, small::-moz-selection { background-color: var(--icon-color); color: var(--text-color-active); }
-button { background-color: var(--con-color); border: 0; cursor: pointer; border-radius: 24px; font-size: 17px; padding: 8px 16px; }
+button { background-color: var(--con-color); border: 0; cursor: pointer; border-radius: 24px; font-size: 17px; padding: 8px 18px; }
 button:hover { background-color: var(--con-color-hover) !important; cursor: pointer; }
 button:active { background-color: var(--con-color-active) !important; cursor: pointer; }
 
@@ -78,7 +78,7 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
 .header { z-index: 3; width: 100%; display: flex; flex-direction: column; align-items: center; }
 .hdr { height: 68px; width: 100%; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; }
 
-.modal, .max-modal, .full-modal, .full-max-modal { transition: 300ms all; transition-timing-function: cubic-bezier(0,0,.38,1.12); }
+.modal, .max-modal, .full-modal, .full-max-modal { transition: 300ms all; }
 
 .blockGeneral { 
     height: 138px;
@@ -127,6 +127,12 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
     align-items: center; 
 }
 
+.countInfo {
+    background: var(--con-color);
+    border-radius: 24px;
+    overflow: hidden;
+}
+
 .weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock {
     height: 24px;
     width: 100%;
@@ -141,6 +147,7 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
     width: 0px;
     height: 24px;
     border-radius: 100px; 
+    transition-timing-function: cubic-bezier(0,0,.38,1.12);
 }
 
 .weekPer, .dayPer, .hourPer, .minutePer, .secondPer {

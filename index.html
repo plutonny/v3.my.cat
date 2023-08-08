@@ -51,11 +51,11 @@
         <link   rel="stylesheet"                    href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="gIc()">
 
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=07.08.2023-v31-b28"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=07.08.2023-v31-b28" as="style">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=07.08.2023-v31-b29"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=07.08.2023-v31-b29" as="style">
         
-        <link   rel="icon"                          href="static/g-icon.png?cache=07.08.2023-v31-b28">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=07.08.2023-v31-b28">
+        <link   rel="icon"                          href="static/g-icon.png?cache=07.08.2023-v31-b29">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=07.08.2023-v31-b29">
 
         <style id="theming"></style>
         <style id="modalWork"></style>
@@ -69,7 +69,7 @@
             "use strict";
             
             var siteVersion = '3.1'
-            var siteBuild = '28'
+            var siteBuild = '29'
 
             if (window.location.href.split('?')[1] == 'debug') plutonny.get.eruda()
 
@@ -89,6 +89,8 @@
             var UISEDT = ''
             if (localStorage.getItem('themeType') == 'season') UISEDT = SEASON
             if (localStorage.getItem('themeType') == 'time') UISEDT = DAYTIMER
+
+            var monthList = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
 
             document.addEventListener("click", (event) => {
                 if (event.target.matches("#modal") && !event.target.closest(".max-modal")) { UX.closeModal('dialog') }
@@ -259,7 +261,7 @@
                                 <div class="full-max-modal" id="full-max-modal">
                                     <style>
                                         div#full-modal { top: 100%; position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 99; }
-                                        div#full-max-modal { width: 100%; height: calc(100vh - 32px); background: var(--bg-modal-color); backdrop-filter: blur(30px); --webkit-backdrop-filter: blur(30px); border-radius: 24px 24px 0 0; }
+                                        div#full-max-modal { width: 100%; height: calc(100vh - 32px); overflow-y: auto; background: var(--bg-modal-color); backdrop-filter: blur(30px); --webkit-backdrop-filter: blur(30px); border-radius: 24px 24px 0 0; }
                                     </style>
                                     <div style="margin: 16px 0; display: flex; justify-content: center;">
                                         <div onclick="UX.closeModal('fullscreen')" style="background: var(--con-alt-color); height: 8px; width: 100px; border-radius: 100px;"></div>
@@ -315,6 +317,16 @@
                         
                     }
                     else plutonny.console.error('index.html -> UX.closeModal()', 'incorrect type of modal')
+                },
+                openInfo: () => {
+                    if (document.getElementById('countInfo').style.height == '40px') {
+                        document.getElementById('countInfo').style.height = '115px'
+                        document.getElementById('countInfoRotate').style.transform = 'rotate(180deg)'
+                    }
+                    else {
+                        document.getElementById('countInfo').style.height = '40px'
+                        document.getElementById('countInfoRotate').style.transform = 'rotate(0deg)'
+                    }
                 }
             }
             UX.theme.get(false)
@@ -411,6 +423,19 @@
                     },
                     counter: async (id) => {
                         let event = JSON.parse(sessionStorage.getItem(`id${id}`))
+                        let dataInfo = ''
+                        if (event.type == 'dayInYear' || event.type == 'timeInYear') {
+                            let dd1 = UX.dateThisYear(event.date, event.time)
+                            dataInfo += `
+                            раз в год: ${event.date.split('-')[1]} ${monthList[event.date.split('-')[0] - 1]}<br>
+                            отмечается уже ${plutonny.UI.rus('year', (DYNAMICTIME.getFullYear() - event.startFrom - ((dd1 > DYNAMICTIME) ? 1 : 0)))}
+                            `
+                        }
+                        if (event.type == 'once') {
+                            dataInfo += `
+                            период с ${event.Sdate.split('-')[2]} ${monthList[event.Sdate.split('-')[1] - 1]} ${event.Sdate.split('-')[0]} по ${event.Edate.split('-')[2]} ${monthList[event.Edate.split('-')[1] - 1]} ${event.Edate.split('-')[0]}<br>
+                            `
+                        }
                         await plutonny.sleep(500)
                         UX.modal('fullscreen', `
                         <style>
@@ -456,6 +481,16 @@
                                 <p id="secondPer" class="secondPer"></p>
                             </div>
                         </div>
+                        <div style="height: 28px;"></div>
+                        <div class="countInfo" id="countInfo" style="height: 40px;">
+                            <button onclick="UX.openInfo()" style="width: 100%; padding: 4px 18px; border-radius: 0px; display: flex; align-items: center; justify-content: space-between;">
+                                <p>информация</p>
+                                <span class="material-symbols-rounded icoGo clickable" id="countInfoRotate" style="font-size: 32px !important; transform: rotate(0deg);">expand_more</span>
+                            </button>
+                            <div style="height: 1px; background: var(--con-alt-color);"></div>
+                            <p style="margin: 18px;">${dataInfo}</p>
+                        </div>
+                        <div style="height: 22px;"></div>
                         `)
                         
                         ND = setInterval(() => { DYNAMICTIME = new Date() }, 100)
@@ -487,9 +522,9 @@
                             AS = setInterval(() => { COUNT.general.second(d1, d2) }, 50)
                         }
                         if (event.type == 'timeInYear') {
-                            let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
-                            let d3 = UX.dateThisYear(event.date, event.time)
-                            if ((DYNAMICTIME.getMonth() == d1.getMonth()) && (DYNAMICTIME.getDate() == d1.getDate()) && DATESTATIC >= d3) {
+                            let [d3, d4] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
+                            let d5 = UX.dateThisYear(event.date, event.time)
+                            if ((DYNAMICTIME.getMonth() == d3.getMonth()) && (DYNAMICTIME.getDate() == d3.getDate()) && DATESTATIC >= d5) {
                                 document.querySelector('#counterGenLine').style.width = '100%'
                                 document.querySelector('#counterGenPer').innerHTML = '100 %'
                                 plutonny.output('id', 'textGeneral', `
@@ -499,24 +534,24 @@
                                 </div>
                                 `)
                             }
-                            COUNT.general.percents(d1, d2, event.processText); await plutonny.sleep(50)
-                            COUNT.general.week(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.day(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.hour(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.minute(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.second(d1, d2)
+                            COUNT.general.percents(d3, d4, event.processText); await plutonny.sleep(50)
+                            COUNT.general.week(d3, d4); await plutonny.sleep(50)
+                            COUNT.general.day(d3, d4); await plutonny.sleep(50)
+                            COUNT.general.hour(d3, d4); await plutonny.sleep(50)
+                            COUNT.general.minute(d3, d4); await plutonny.sleep(50)
+                            COUNT.general.second(d3, d4)
 
-                            GP = setInterval(() => { COUNT.general.percents(d1, d2, event.processText) }, 100)
-                            AW = setInterval(() => { COUNT.general.week(d1, d2) }, 1000)
-                            AD = setInterval(() => { COUNT.general.day(d1, d2) }, 1000)
-                            AH = setInterval(() => { COUNT.general.hour(d1, d2) }, 1000)
-                            AM = setInterval(() => { COUNT.general.minute(d1, d2) }, 300)
-                            AS = setInterval(() => { COUNT.general.second(d1, d2) }, 50)
+                            GP = setInterval(() => { COUNT.general.percents(d3, d4, event.processText) }, 100)
+                            AW = setInterval(() => { COUNT.general.week(d3, d4) }, 1000)
+                            AD = setInterval(() => { COUNT.general.day(d3, d4) }, 1000)
+                            AH = setInterval(() => { COUNT.general.hour(d3, d4) }, 1000)
+                            AM = setInterval(() => { COUNT.general.minute(d3, d4) }, 300)
+                            AS = setInterval(() => { COUNT.general.second(d3, d4) }, 50)
                         }
                         if (event.type == 'once') {
-                            let d1 = new Date(event.Sdate.split('-')[0], event.Sdate.split('-')[1] - 1, event.Sdate.split('-')[2], event.Stime.split(':')[0], event.Stime.split(':')[1])
-                            let d2 = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
-                            if (DYNAMICTIME >= d2) {
+                            let d6 = new Date(event.Sdate.split('-')[0], event.Sdate.split('-')[1] - 1, event.Sdate.split('-')[2], event.Stime.split(':')[0], event.Stime.split(':')[1])
+                            let d7 = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
+                            if (DYNAMICTIME >= d7) {
                                 document.querySelector('#counterGenLine').style.width = '100%'
                                 document.querySelector('#counterGenPer').innerHTML = '100 %'
                                 plutonny.output('id', 'textGeneral', `
@@ -526,19 +561,19 @@
                                 </div>
                                 `)
                             }
-                            COUNT.general.percents(d1, d2, event.processText); await plutonny.sleep(50)
-                            COUNT.general.week(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.day(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.hour(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.minute(d1, d2); await plutonny.sleep(50)
-                            COUNT.general.second(d1, d2)
+                            COUNT.general.percents(d6, d7, event.processText); await plutonny.sleep(50)
+                            COUNT.general.week(d6, d7); await plutonny.sleep(50)
+                            COUNT.general.day(d6, d7); await plutonny.sleep(50)
+                            COUNT.general.hour(d6, d7); await plutonny.sleep(50)
+                            COUNT.general.minute(d6, d7); await plutonny.sleep(50)
+                            COUNT.general.second(d6, d7)
 
-                            GP = setInterval(() => { COUNT.general.percents(d1, d2, event.processText) }, 100)
-                            AW = setInterval(() => { COUNT.general.week(d1, d2) }, 1000)
-                            AD = setInterval(() => { COUNT.general.day(d1, d2) }, 1000)
-                            AH = setInterval(() => { COUNT.general.hour(d1, d2) }, 1000)
-                            AM = setInterval(() => { COUNT.general.minute(d1, d2) }, 300)
-                            AS = setInterval(() => { COUNT.general.second(d1, d2) }, 50)
+                            GP = setInterval(() => { COUNT.general.percents(d6, d7, event.processText) }, 100)
+                            AW = setInterval(() => { COUNT.general.week(d6, d7) }, 1000)
+                            AD = setInterval(() => { COUNT.general.day(d6, d7) }, 1000)
+                            AH = setInterval(() => { COUNT.general.hour(d6, d7) }, 1000)
+                            AM = setInterval(() => { COUNT.general.minute(d6, d7) }, 300)
+                            AS = setInterval(() => { COUNT.general.second(d6, d7) }, 50)
                         }
                     }
                 }
@@ -676,7 +711,7 @@
                         <div style="width: 8px;"></div>
                         <img src="static/emoji/heart.png" height="32px" width="32px">
                         <div style="margin-right: auto;"></div>
-                        <span onclick="UI.modal.settings()" class="material-symbols-rounded icoGo clickable" style="font-size: 32px !important; user-select: none;">settings</span>
+                        <span onclick="UI.modal.settings()" class="material-symbols-rounded icoGo clickable" style="font-size: 32px !important;">settings</span>
                         <div style="width: 46px;"></div>
                     </div>
                     <hr style="border: none; height: 1px; margin-top: 0; margin-bottom: 0; background-color: var(--text-color); opacity: 0.2; width: calc(100% - 20px);">
