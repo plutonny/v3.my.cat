@@ -37,7 +37,7 @@
 
 * {
     margin: 0;
-    transition: 700ms all;
+    transition: 400ms all;
     font-family: 'Montserrat';
     word-break: keep-all;
     letter-spacing: 0.05em;
@@ -100,7 +100,7 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
     overflow: hidden;
 }
 
-.conHA{ background: var(--con-color); cursor: pointer; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); padding: 18px; }
+.conHA{ background: var(--con-color); cursor: pointer; display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; background: var(--con-color); padding: 18px; border-radius: 12px; }
 .conHA:hover { background: var(--con-color-hover) !important; cursor: pointer; }
 .conHA:active { background: var(--con-color-active) !important; cursor: pointer; }
 
@@ -129,9 +129,9 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
 }
 
 .countInfo {
-    background: var(--con-color);
     border-radius: 24px;
     overflow: hidden;
+    transition: 700ms all;
 }
 
 .weekBlock, .dayBlock, .hourBlock, .minuteBlock, .secondBlock {
@@ -148,6 +148,7 @@ button:active { background-color: var(--con-color-active) !important; cursor: po
     width: 0px;
     height: 24px;
     border-radius: 100px; 
+    transition: 700ms all;
     transition-timing-function: cubic-bezier(0,0,.38,1.12);
 }
 

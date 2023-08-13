@@ -11,18 +11,6 @@
         "color": "blue"
     },
     "2": {
-        "type": "once",
-        "nameText": "приезд Макса с отпуска",
-        "processText": "до приезда Макса",
-        "endText": "Макс приехал",
-        "Sdate": "2023-7-21",
-        "Stime": "23:58",
-        "Edate": "2023-8-12",
-        "Etime": "09:00",
-        "icon": "beach_access",
-        "color": "green"
-    },
-    "3": {
         "type": "dayInYear",
         "nameText": "день рождения Макса",
         "processText": "до дня рождения Макса",
@@ -32,7 +20,7 @@
         "icon": "celebration",
         "color": "red"
     },
-    "4": {
+    "3": {
         "type": "dayInYear",
         "nameText": "день рождения Вити",
         "processText": "до дня рождения Вити",
@@ -42,5 +30,5 @@
         "icon": "emoji_nature",
         "color": "yellow"
     },
-    "count": 4
+    "count": 3
 }

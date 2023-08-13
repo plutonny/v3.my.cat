@@ -221,7 +221,7 @@
                             await plutonny.sleep(100)
                             if (!noHead) document.getElementById("theme-color").content = window.getComputedStyle(document.body).getPropertyValue(`--UI-${DAYTIMER}-b`)
                         } else {
-                            plutonny.console.error('index.html -> UX.theme.get()', 'theme type is indefined')
+                            plutonny.console.error('UX.theme.get()', 'theme type is indefined')
                         }
                     },
                     modalColor: () => {
@@ -236,7 +236,7 @@
                             if (DAYTIMER == 'evening') return '#659cad'
                             if (DAYTIMER == 'sunset') return '#4c0c36'
                         } else {
-                            plutonny.console.error('index.html -> UX.theme.modalColor()', 'theme type is indefined')
+                            plutonny.console.error('UX.theme.modalColor()', 'theme type is indefined')
                         }
                     }
                 },
@@ -261,7 +261,7 @@
                             `)
                             return true
                         } catch (e) {
-                            plutonny.console.error('index.html -> UX.modal(dialog)', e)
+                            plutonny.console.error('UX.modal(dialog)', e)
                             return false
                         }
                     }
@@ -273,9 +273,10 @@
                                         div#full-modal { top: 100%; position: fixed; height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: flex-end; z-index: 99; }
                                         div#full-max-modal { width: 100%; height: calc(100vh - 32px); overflow-y: auto; background: var(--bg-modal-color); ${NOBLUR ? '' : 'backdrop-filter: blur(30px); --webkit-backdrop-filter: blur(30px);'} border-radius: 24px 24px 0 0; }
                                     </style>
-                                    <div style="margin: 16px 0; display: flex; justify-content: center;">
-                                        <div onclick="UX.closeModal('fullscreen')" style="background: var(--con-alt-color); height: 8px; width: 100px; border-radius: 100px;"></div>
+                                    <div style="margin: 18px; display: flex; justify-content: flex-end;">
+                                        <p onclick="UX.closeModal('fullscreen')" style="cursor: pointer;" class="bold">закрыть</p>
                                     </div>
+                                    <hr style="border: none; height: 1px; margin-top: 0; margin-bottom: 0; background-color: var(--con-alt-color); width: 100%;">
                                     ${content}
                                 </div>
                             `)
@@ -284,8 +285,11 @@
                                 html, body { background: #000000; }
                                 div#full-modal { top: 0% !important; }
                                 .page {
-                                    margin: 16px;
-                                    border-radius: 18px;
+                                    margin-top: 16px;
+                                    margin-left: 16px;
+                                    margin-right: 16px;
+                                    border-top-left-radius: 18px;
+                                    border-top-right-radius: 18px;
                                     position: fixed;
                                 }
                                 @media (max-width: 540px) {
@@ -299,11 +303,11 @@
                             document.getElementById('theme-color').content = '#000000'
                             return true
                         } catch (e) {
-                            plutonny.console.error('index.html -> UX.modal(fullscreen)', e)
+                            plutonny.console.error('UX.modal(fullscreen)', e)
                             return false
                         }
                     }
-                    else plutonny.console.error('index.html -> UX.modal()', 'incorrect type of modal')
+                    else plutonny.console.error('UX.modal()', 'incorrect type of modal')
                 },
                 closeModal: async (type) => {
                     if (type == 'dialog') {
@@ -331,7 +335,7 @@
                 },
                 openInfo: () => {
                     if (document.getElementById('countInfo').style.height == '40px') {
-                        document.getElementById('countInfo').style.height = '115px'
+                        document.getElementById('countInfo').style.height = '118px'
                         document.getElementById('countInfoRotate').style.transform = 'rotate(180deg)'
                     }
                     else {
@@ -379,9 +383,9 @@
                     document.getElementById('countGenText').innerHTML = '<p style="margin: 18px 0 0 0; font-size: 14px; position: absolute;">0&nbsp;дней,&nbsp;0&nbsp;часов,&nbsp;0&nbsp;минут,&nbsp;0&nbsp;секунд</p>'
                     document.getElementById('countAddCon').innerHTML = `
                     <div style="display: flex; align-items: center; flex-direction: column; justify-content: center; height: 100%;">
-                        <img src="/static/emoji/party.png" style="height: 120px; width: 120px;">
+                        <img src="/static/emoji/endEvent.png" style="height: 120px; width: 120px;">
                         <div style="height: 24px;"></div>
-                        <p class="bold" style="font-size: 24px;">${endText}</p>
+                        <p class="bold" style="font-size: 24px; text-align: center;">${endText}</p>
                     </div>
                     `
                 }
@@ -394,15 +398,17 @@
             var UIelements = 0
             var UI = {
                 event: (size, event, id) => {
-                    let inj, d1, d2
                     UIelements++
                     switch(size) {
                         case 'small':
+                            let dd1s, dd2s, ddny, inj
                             if (event.type == 'once') {
-                                d2 = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
-                                inj = COUNT.fastDay(DYNAMICTIME, d2)
+                                dd1s = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
+                                inj = COUNT.fastDay(DYNAMICTIME, dd1s)
                             } else {
-                                inj = COUNT.fastDay(DYNAMICTIME, UX.dateThisYear(event.date, event.time))
+                                dd2s = UX.dateThisYear(event.date, event.time)
+                                ddny = new Date(dd2s.getFullYear() + 1, dd2s.getMonth(), dd2s.getDate(), dd2s.getHours(), dd2s.getMinutes())
+                                inj = dd2s > DYNAMICTIME ? COUNT.fastDay(DYNAMICTIME, dd2s) : COUNT.fastDay(DYNAMICTIME, ddny)
                             }
                             return `<div id="UIelement${UIelements}" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; opacity: 0;">
                                 <div style="height: 36px; width: 36px;">
@@ -418,13 +424,15 @@
                                 <p style="font-size: 15px; margin: 0;">${event.nameText} <small style="font-size: 12px; margin: 0;">(${inj}&nbsp;дн.)</small></p>
                                 </div>`
                         case 'large':
+                            let dd1l, dd2l
                             if (event.type == 'once') {
-                                d1 = new Date(event.Sdate.split('-')[0], event.Sdate.split('-')[1] - 1, event.Sdate.split('-')[2], event.Stime.split(':')[0], event.Stime.split(':')[1])
-                                d2 = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
+                                dd1l = new Date(event.Sdate.split('-')[0], event.Sdate.split('-')[1] - 1, event.Sdate.split('-')[2], event.Stime.split(':')[0], event.Stime.split(':')[1])
+                                dd2l = new Date(event.Edate.split('-')[0], event.Edate.split('-')[1] - 1, event.Edate.split('-')[2], event.Etime.split(':')[0], event.Etime.split(':')[1])
                             } else {
-                                [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
+                                [dd1l, dd2l] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
                             }
-                            return `<div id="UIelement${UIelements}" onclick="UI.modal.counter(${id})" class="conHA" style="opacity: 0;">
+                            return `
+                            <div id="UIelement${UIelements}" onclick="UI.modal.counter(${id})" class="conHA" style="opacity: 0;">
                                 <div style="height: 42px; width: 42px;">
                                     ${plutonny.UI.gIcon({
                                         size: 42,
@@ -437,8 +445,8 @@
                                 <div style="width: 16px;"></div>
                                 <p style="font-size: 16px; margin: 0;">${event.nameText}</p>
                                 <div style="margin-right: auto;"></div>
-                                <p style="font-size: 24px; margin: 0 0 0 8px;">${COUNT.fastPer(d1, d2, event.type)}</p>
-                                </div>`
+                                <p style="font-size: 24px; margin: 0 0 0 8px;">${COUNT.fastPer(dd1l, dd2l, event.type)}</p>
+                            </div>`
                     }
                 },
                 modal: {
@@ -463,9 +471,9 @@
                         </div>
                         <div style="height: 24px;"></div>
                         <div style="display: flex; flex-direction: column; border-radius: 24px; overflow: hidden;">
-                            <button onclick="dataSet.cache()" id="CCB" style="border-radius: 0px;">очистить кэш</button>
-                            <div style="height: 1px; background: var(--con-alt-color);"></div>
-                            <button onclick="dataSet.clearModal()" style="border-radius: 0px;">удалить все данные</button>
+                            <button onclick="dataSet.cache()" id="CCB" style="border-radius: 8px;">очистить кэш</button>
+                            <div style="height: 4px;"></div>
+                            <button onclick="dataSet.clearModal()" style="border-radius: 8px;">удалить все данные</button>
                         </div>
                         <div style="height: 24px;"></div>
                         <p style="text-align: center;" class="bold">v${siteVersion} (${siteBuild})</p>
@@ -493,7 +501,7 @@
                             период с ${event.Stime} ${event.Sdate.split('-')[2]} ${monthList[event.Sdate.split('-')[1] - 1]} ${event.Sdate.split('-')[0]} по ${event.Etime} ${event.Edate.split('-')[2]} ${monthList[event.Edate.split('-')[1] - 1]} ${event.Edate.split('-')[0]}<br>
                             `
                         }
-                        await plutonny.sleep(500)
+                        
                         UX.modal('fullscreen', `
                         <style>
                          .full-max-modal { padding: 0 24px !important; }
@@ -540,18 +548,20 @@
                         </div>
                         <div style="height: 28px;"></div>
                         <div class="countInfo" id="countInfo" style="height: 40px;">
-                            <button onclick="UX.openInfo()" style="width: 100%; padding: 4px 18px; border-radius: 0px; display: flex; align-items: center; justify-content: space-between;">
+                            <button onclick="UX.openInfo()" style="width: 100%; padding: 4px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
                                 <p>информация</p>
                                 <span class="material-symbols-rounded icoGo clickable" id="countInfoRotate" style="font-size: 32px !important; transform: rotate(0deg);">expand_more</span>
                             </button>
-                            <div style="height: 1px; background: var(--con-alt-color);"></div>
-                            <p style="margin: 18px;">${dataInfo}</p>
+                            <div style="height: 4px;"></div>
+                            <div style="border-radius: 8px; background: var(--con-color);">
+                                <p style="padding: 18px;">${dataInfo}</p>
+                            </div>
                         </div>
                         <div style="height: 22px;"></div>
                         `)
                         
                         ND = setInterval(() => { DYNAMICTIME = new Date() }, 100)
-                        await plutonny.sleep(300)
+                        await plutonny.sleep(700)
 
                         if (event.type == 'dayInYear') {
                             let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
@@ -699,10 +709,10 @@
                 window.addEventListener('load', () => {
                     navigator.serviceWorker.register('/service-worker.js').then(
                         (registration) => { console.log(`serviceWorker: registration with scope ${registration.scope}`) },
-                        (e) => { plutonny.console.error('index.html ->', `serviceWorker registration failed: ${e}`) }
-                    ).catch((e) => { plutonny.console.error('index.html ->', `serviceWorker function (${e})`) })
+                        (e) => { plutonny.console.error('serviceWorker module', `serviceWorker registration failed: ${e}`) }
+                    ).catch((e) => { plutonny.console.error('serviceWorker module', `serviceWorker function (${e})`) })
                 })
-            } else plutonny.console.warn('index.html ->', 'service worker is not supported')
+            } else plutonny.console.warn('serviceWorker module', 'service worker is not supported')
         </script>
     </head>
     <body>
@@ -719,12 +729,12 @@
                         <div style="width: 46px;"></div>
                         <p style="text-align: center; font-size: 32px; margin: 0; z-index: 10;" class="bold" onclick="plutonny.get.eruda()">my cat</p>
                         <div style="width: 8px;"></div>
-                        <img src="static/emoji/heart.png" height="32px" width="32px">
+                        <img src="static/emoji/headerLogo.png" height="32px" width="32px">
                         <div style="margin-right: auto;"></div>
                         <span onclick="UI.modal.settings()" class="material-symbols-rounded icoGo clickable" style="font-size: 32px !important;">settings</span>
                         <div style="width: 46px;"></div>
                     </div>
-                    <hr style="border: none; height: 1px; margin-top: 0; margin-bottom: 0; background-color: var(--text-color); opacity: 0.2; width: calc(100% - 20px);">
+                    <hr style="border: none; height: 1px; margin-top: 0; margin-bottom: 0; background-color: var(--con-alt-color); width: calc(100% - 48px);">
                 </div>
                 <div class="content" id="content">
                     <div class="blockGeneral" id="blockGeneral">
@@ -767,6 +777,14 @@
                     else                                WRdata = new Date(`${DYNAMICTIME.getFullYear()}-${fileCounters[i].date}`)
                     if ((WRdata - DYNAMICTIME) > 0)     datesTSort.push([i, WRdata.getTime()])
                 }
+                if (datesTSort.length == 0) {
+                    for (let i = 1; i <= fileCounters.count; i++) {
+                        let WRdata
+                        if (fileCounters[i].type == 'once') WRdata = new Date(`${fileCounters[i].Edate} ${fileCounters[i].Etime}`)
+                        else                                WRdata = new Date(`${DYNAMICTIME.getFullYear() + 1}-${fileCounters[i].date}`)
+                        datesTSort.push([i, WRdata.getTime()])
+                    } 
+                }
                 let fastest = datesTSort.sort((a, b) => { return a[1] > b[1] })[0][0]
                 plutonny.output('id add', 'textGeneral', UI.event('small', fileCounters[fastest]))
                 await plutonny.sleep(10)
@@ -778,9 +796,9 @@
                     let OUdata
                     if (fileCounters[i].type == 'once') { 
                         OUdata = new Date(`${fileCounters[i].Edate} ${fileCounters[i].Etime}`)
-                        if (DYNAMICTIME <= OUdata) plutonny.output('id add', 'countersContainer', `${UI.event('large', fileCounters[i], i)}${i == fileCounters.count ? '' : '<div style="height: 1px; background: var(--con-alt-color);"></div>'}`)
+                        if (DYNAMICTIME <= OUdata) plutonny.output('id add', 'countersContainer', `${UI.event('large', fileCounters[i], i)}${i == fileCounters.count ? '' : '<div style="height: 8px;"></div>'}`)
                     }
-                    else plutonny.output('id add', 'countersContainer', `${UI.event('large', fileCounters[i], i)}${i == fileCounters.count ? '' : '<div style="height: 1px; background: var(--con-alt-color);"></div>'}`)
+                    else plutonny.output('id add', 'countersContainer', `${UI.event('large', fileCounters[i], i)}${i == fileCounters.count ? '' : '<div style="height: 8px;"></div>'}`)
                     await plutonny.sleep(50)
                     document.getElementById(`UIelement${UIelements}`).style.opacity = 1
                 }
@@ -797,6 +815,14 @@
                         else                              WRdata2 = new Date(`${DYNAMICTIME.getFullYear()}-${SScounters[i].date}`)
                         if ((WRdata2 - DYNAMICTIME) > 0)  datesTSort2.push([i, WRdata2.getTime()])
                     }
+                    if (datesTSort2.length == 0) {
+                        for (let i = 0; i < SScount; i++) {
+                            let WRdata2
+                            if (SScounters[i].type == 'once') WRdata2 = new Date(`${SScounters[i].Edate} ${SScounters[i].Etime}`)
+                            else                              WRdata2 = new Date(`${DYNAMICTIME.getFullYear() + 1}-${SScounters[i].date}`)
+                            datesTSort2.push([i, WRdata2.getTime()])
+                        } 
+                    }
                     let fastest2 = datesTSort2.sort((a, b) => { return a[1] > b[1] })[0][0]
                     plutonny.output('id add', 'textGeneral', UI.event('small', SScounters[fastest2]))
                     await plutonny.sleep(10)
@@ -806,9 +832,9 @@
                         let OUdata2
                         if (SScounters[i].type == 'once') { 
                             OUdata2 = new Date(`${SScounters[i].Edate} ${SScounters[i].Etime}`)
-                            if (DYNAMICTIME <= OUdata2) plutonny.output('id add', 'countersContainer', `${UI.event('large', SScounters[i], i)}${i == SScount - 1 ? '' : '<div style="height: 1px; background: var(--con-alt-color);"></div>'}`)
+                            if (DYNAMICTIME <= OUdata2) plutonny.output('id add', 'countersContainer', `${UI.event('large', SScounters[i], i)}${i == SScount - 1 ? '' : '<div style="height: 8px;"></div>'}`)
                         }
-                        else plutonny.output('id add', 'countersContainer', `${UI.event('large', SScounters[i], i)}${i == SScount - 1 ? '' : '<div style="height: 1px; background: var(--con-alt-color);"></div>'}`)
+                        else plutonny.output('id add', 'countersContainer', `${UI.event('large', SScounters[i], i)}${i == SScount - 1 ? '' : '<div style="height: 8px;"></div>'}`)
                         await plutonny.sleep(50)
                         document.getElementById(`UIelement${UIelements}`).style.opacity = 1
                     }
@@ -841,9 +867,9 @@
                         </div>
                         <div style="height: 24px;"></div>
                         <div style="width: 100%; border-radius: 24px; display: flex;flex-direction: column; border-radius: 24px; overflow: hidden;">
-                            <button style="background: var(--con-color); height: 52px; border-radius: 0px; color: #ff0000;" class="bold" onclick="dataSet.clear()">УДАЛИТЬ</button>
-                            <div style="height: 1px; background: var(--con-alt-color);"></div>
-                            <button style="background: var(--con-color); height: 52px; border-radius: 0px;" onclick="UX.closeModal('dialog')">отмена</button>
+                            <button style="background: var(--con-color); height: 52px; border-radius: 8px; color: #ff0000;" class="bold" onclick="dataSet.clear()">УДАЛИТЬ</button>
+                            <div style="height: 4px;"></div>
+                            <button style="background: var(--con-color); height: 52px; border-radius: 8px;" onclick="UX.closeModal('dialog')">отмена</button>
                         </div>
                     `)
                 },
@@ -863,7 +889,7 @@
                     UX.closeModal('dialog')
                     await plutonny.sleep(700)
                     UX.modal('dialog', `
-                    <div style="width: 100%; background: var(--bg-modal-color); border-radius: 24px;">
+                    <div style="width: 100%; background: var(--con-color); border-radius: 24px;">
                         <div style="height: 18px;"></div>
                         <h2 class="bold" style="text-align: center;">успешно!</h2>
                         <div style="height: 24px;"></div>
@@ -872,7 +898,7 @@
                     </div>
                     <div style="height: 24px;"></div>
                     <div style="width: 100%; border-radius: 24px; display: flex;flex-direction: column; border-radius: 24px; overflow: hidden;">
-                        <button style="background: var(--bg-modal-color); height: 52px; border-radius: 0px;" onclick="location.reload()">перезагрузить</button>
+                        <button style="background: var(--con-color); height: 52px; border-radius: 0px;" onclick="location.reload()">перезагрузить</button>
                     </div>
                     `)
                 }
