@@ -51,15 +51,17 @@
         <link   rel="stylesheet"                    href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
         <link   rel="preload prefetch"              href="https://fonts.gstatic.com/s/materialsymbolsrounded/v74/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2" as="font" type="font/woff2" crossorigin onload="gIc()">
 
-        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=09.08.2023-v31-b29"></script>
-        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=09.08.2023-v31-b29" as="style">
+        <script type="text/javascript"              src="https://lib.plutonny.ru/plutonny.js/v1.1.js?cache=14.08.2023-v31-b30"></script>
+        <link   rel="preload prefetch stylesheet"   href="static/main.css?cache=14.08.2023-v31-b30" as="style">
         
-        <link   rel="icon"                          href="static/g-icon.png?cache=09.08.2023-v31-b29">
-        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=09.08.2023-v31-b29">
+        <link   rel="icon"                          href="static/g-icon.png?cache=14.08.2023-v31-b30">
+        <link   rel="apple-touch-icon"              href="pwa-icon-apple.png?cache=14.08.2023-v31-b30">
 
         <style id="theming"></style>
         <style id="modalWork"></style>
         <style id="fullModalWork"></style>
+        <style id="modalWork2"></style>
+        <style id="fullModalWork2"></style>
         <style id="gIc">
             .icoGo { opacity: 0; }
         </style>
@@ -69,7 +71,7 @@
             "use strict";
             
             var siteVersion = '3.1'
-            var siteBuild = '29'
+            var siteBuild = '30'
 
             if (window.location.href.split('?')[1] == 'debug') plutonny.get.eruda()
 
@@ -223,6 +225,10 @@
                         } else {
                             plutonny.console.error('UX.theme.get()', 'theme type is indefined')
                         }
+                        if (plutonny.isMobile()) plutonny.output('id add', 'theming', `
+                            * { cursor: default !important; }
+                            :root { --con-color-hover: var(--con-color) !important; }
+                        `)
                     },
                     modalColor: () => {
                         // for background color modal: #00000040
@@ -257,8 +263,13 @@
                             // document.getElementById("theme-color").content = UX.theme.modalColor()
                             plutonny.output('id', 'modalWork', `
                                 div#modal { top: 0% !important; }
+                            `)
+                            await plutonny.sleep(200)
+                            plutonny.output('id', 'modalWork2', `
                                 div#full-max-modal, div#page { filter: blur(5px); --webkit-filter: blur(5px); }
                             `)
+                            await plutonny.sleep(200)
+                            if (document.getElementById('modal').innerHTML == '') UX.modal('dialog', content)
                             return true
                         } catch (e) {
                             plutonny.console.error('UX.modal(dialog)', e)
@@ -282,8 +293,11 @@
                             `)
                             await plutonny.sleep(200)
                             plutonny.output('id', 'fullModalWork', `
-                                html, body { background: #000000; }
                                 div#full-modal { top: 0% !important; }
+                            `) 
+                            await plutonny.sleep(200)
+                            plutonny.output('id', 'fullModalWork2', `
+                                html, body { background: #000000; }
                                 .page {
                                     margin-top: 16px;
                                     margin-left: 16px;
@@ -301,6 +315,7 @@
                             `) 
                             await plutonny.sleep(200)
                             document.getElementById('theme-color').content = '#000000'
+                            if (document.getElementById('full-modal').innerHTML == '') UX.modal('fullscreen', content)
                             return true
                         } catch (e) {
                             plutonny.console.error('UX.modal(fullscreen)', e)
@@ -311,13 +326,18 @@
                 },
                 closeModal: async (type) => {
                     if (type == 'dialog') {
+                        document.getElementById('modalWork2').innerHTML = '';
+                        await plutonny.sleep(200);
                         document.getElementById('modalWork').innerHTML = '';
-                        await plutonny.sleep(700);
+                        await plutonny.sleep(400);
                         document.getElementById('modal').innerHTML = '';
                     } 
                     else if (type == 'fullscreen') {
+                        document.getElementById('fullModalWork2').innerHTML = '';
+                        await plutonny.sleep(100);
+                        UX.theme.get(false)
+                        await plutonny.sleep(100);
                         document.getElementById('fullModalWork').innerHTML = '';
-                        await plutonny.sleep(200);
                         clearInterval(ND)
                         clearInterval(CE)
                         clearInterval(GP)
@@ -326,8 +346,7 @@
                         clearInterval(AH)
                         clearInterval(AM)
                         clearInterval(AS)
-                        UX.theme.get(false)
-                        await plutonny.sleep(500);
+                        await plutonny.sleep(400);
                         document.getElementById('full-modal').innerHTML = '';
                         
                     }
@@ -561,7 +580,7 @@
                         `)
                         
                         ND = setInterval(() => { DYNAMICTIME = new Date() }, 100)
-                        await plutonny.sleep(700)
+                        await plutonny.sleep(500)
 
                         if (event.type == 'dayInYear') {
                             let [d1, d2] = UX.datePrepare(UX.dateThisYear(event.date, event.time))
@@ -629,15 +648,19 @@
                                 r  -=            rm * 60
                             let rs  = Math.floor(r)
 
-                            plutonny.output('id', 'countGenText', `
-                            <p style="margin: 18px 0 0 0; font-size: 14px; position: absolute;">
-                                ${plutonny.UI.rus('day', rd)},&nbsp;${plutonny.UI.rus('hour', rh)},&nbsp;${plutonny.UI.rus('minute', rm)},&nbsp;${plutonny.UI.rus('second', rs)}
-                            </p>`)
-
+                            try {
+                                document.querySelector('#countGenText').innerHTML = `
+                                <p style="margin: 18px 0 0 0; font-size: 14px; position: absolute;">
+                                    ${plutonny.UI.rus('day', rd)},&nbsp;${plutonny.UI.rus('hour', rh)},&nbsp;${plutonny.UI.rus('minute', rm)},&nbsp;${plutonny.UI.rus('second', rs)}
+                                </p>`
+                            } catch {
+                                UX.closeModal('fullscreen')
+                            }
+                            
                             let pd100 = (START - DYNAMICTIME) / (START - END) * 100
                             let pm100 = parseFloat(parseInt((pd100 * 1000) + 1)) / 1000
 
-                            plutonny.output('id', 'countGenPer', `${pm100} %`)
+                            document.querySelector('#countGenPer').innerHTML = `${pm100} %`
                             document.querySelector('#countGenLine').style.width = `${(((document.body.clientWidth >= 540 ? 440 : document.body.clientWidth) - 36 - 48) / 100) * pm100}px`
                         }
                     },
